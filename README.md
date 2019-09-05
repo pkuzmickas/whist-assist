@@ -1,1 +1,7 @@
 # whist-assist
+
+* SCAlA
+* REACT.JS/NATIVE
+* POSTGRESQL
+* DOCKER
+* MATERIAl.UI
