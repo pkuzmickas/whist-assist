@@ -5,11 +5,35 @@ import { Component, OnInit } from '@angular/core';
   templateUrl: './landing.component.html',
   styleUrls: ['./landing.component.css']
 })
-export class LandingComponent implements OnInit {
+export class LandingComponent {
 
-  constructor() { }
+  // names: Array<string>;
+  players = [];
+  readonly minimumPlayers = 3;
+  full = false;
+  // rows = [];
 
-  ngOnInit() {
+  constructor() {
+    this.players = [
+      { name: '' },
+      { name: '' },
+      { name: '' }
+    ];
+  }
+
+  nameChange(row: number, newName: string): void {
+    if (this.allNamesFull()) {
+      this.players.push({ name: '' });
+    }
+  }
+
+  allNamesFull(): boolean {
+    for (const player of this.players) {
+      if (player.name.length === 0) {
+        return false;
+      }
+    }
+    return true;
   }
 
 }

@@ -2,31 +2,25 @@
   <div class="container">
     <div class="row title-bg">
       <div class="col center pt-5 pb-5">
-        <span class="title title-font" color='primary'>
-          WHIST-ASSIST
+        <span class="title title-font" color="primary">
+          PLAYER NAMES
         </span>
       </div>
     </div>
+    <div class='pt-4'></div>
+    <div class="row" *ngFor="let player of players; let i = index">
+      <div class="col center">
+        <mat-form-field appearance="outline" color="accent">
+          <mat-label>Player Name</mat-label>
+          <input matInput [(ngModel)]='players[i].name' (keyup)='nameChange($event.target.value)'/>
+        </mat-form-field>
+      </div>
+    </div>
     <div class="row">
-      <div class="col center pt-4">
-        <div class="form-group">
-          <label for="name" class='name'>PLAYER NAMES</label>
-        </div>
-        <mat-form-field appearance="outline">
+      <div class="col center">
+        <mat-form-field appearance="outline" color="accent">
           <mat-label>Name</mat-label>
-          <input matInput>
-        </mat-form-field>
-        <mat-form-field appearance="outline">
-          <mat-label>Name</mat-label>
-          <input matInput>
-        </mat-form-field>
-        <mat-form-field appearance="outline">
-          <mat-label>Name</mat-label>
-          <input matInput>
-        </mat-form-field>
-        <mat-form-field appearance="outline">
-          <mat-label>Name</mat-label>
-          <input matInput>
+          <input matInput disabled />
         </mat-form-field>
       </div>
     </div>
@@ -36,12 +30,11 @@
   <div class="container">
     <div class="row">
       <div class="col center">
-        <button mat-raised-button color="primary" class='login'>LOGIN</button>
+        <button mat-raised-button color="primary" class="login">LOGIN</button>
       </div>
       <div class="col center">
-        <button mat-raised-button disabled class='login'>CONTINUE</button>
+        <button mat-raised-button disabled class="login">CONTINUE</button>
       </div>
     </div>
   </div>
 </div>
-
