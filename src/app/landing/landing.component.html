@@ -1,13 +1,7 @@
+<app-top></app-top>
 <div class="background">
   <div class="container">
-    <div class="row title-bg">
-      <div class="col center pt-5 pb-5">
-        <span class="title title-font" color="primary">
-          PLAYER NAMES
-        </span>
-      </div>
-    </div>
-    <div class='pt-4'></div>
+    <div class='top-padding'></div>
     <div class="row" *ngFor="let player of players; let i = index">
       <div class="col center">
         <mat-form-field appearance="outline" color="accent">
@@ -16,25 +10,14 @@
         </mat-form-field>
       </div>
     </div>
-    <div class="row">
+    <div class="row lastname">
       <div class="col center">
         <mat-form-field appearance="outline" color="accent">
-          <mat-label>Name</mat-label>
+          <mat-label>Player Name</mat-label>
           <input matInput disabled />
         </mat-form-field>
       </div>
     </div>
   </div>
 </div>
-<div class="bottom">
-  <div class="container">
-    <div class="row">
-      <div class="col center">
-        <button mat-raised-button color="primary" class="login">LOGIN</button>
-      </div>
-      <div class="col center">
-        <button mat-raised-button disabled class="login">CONTINUE</button>
-      </div>
-    </div>
-  </div>
-</div>
+<app-bottom></app-bottom>

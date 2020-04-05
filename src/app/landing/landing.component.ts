@@ -8,7 +8,7 @@ import { Component, OnInit } from '@angular/core';
 export class LandingComponent {
 
   // names: Array<string>;
-  players = [];
+  private players;
   readonly minimumPlayers = 3;
   full = false;
   // rows = [];
@@ -20,7 +20,7 @@ export class LandingComponent {
       { name: '' }
     ];
   }
-
+ // check formarrays
   nameChange(row: number, newName: string): void {
     if (this.allNamesFull()) {
       this.players.push({ name: '' });
