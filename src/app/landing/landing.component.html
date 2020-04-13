@@ -1,8 +1,8 @@
 <app-top></app-top>
 <div class="background">
   <div class="container">
-    <app-names></app-names>
+    <app-names (isValid)='onValidityChange($event)' ></app-names>
     <div class="bottom-padding"></div>
   </div>
 </div>
-<app-bottom></app-bottom>
+<app-bottom [stageValid]='isStageValid'></app-bottom>

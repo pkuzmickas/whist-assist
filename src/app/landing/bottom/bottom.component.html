@@ -1,10 +1,10 @@
 <div class="bottom">
   <div class="row bot-buttons">
     <div class="col center pl-5">
-      <button mat-raised-button color="primary" class="login">LOGIN</button>
+      <button mat-raised-button color="secondary" class="login">LOGIN</button>
     </div>
     <div class="col center pr-5">
-      <button mat-raised-button disabled class="login">CONTINUE</button>
+      <button mat-raised-button color="primary" [disabled]="!stageValid" class="login" (click)='test()'>CONTINUE</button>
     </div>
   </div>
 </div>

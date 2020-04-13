@@ -1,15 +1,16 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 
 @Component({
   selector: 'app-bottom',
   templateUrl: './bottom.component.html',
   styleUrls: ['./bottom.component.css']
 })
-export class BottomComponent implements OnInit {
+export class BottomComponent {
+
+  @Input() stageValid: boolean;
 
   constructor() { }
-
-  ngOnInit() {
+  test() {
+    console.log(this.stageValid);
   }
-
 }

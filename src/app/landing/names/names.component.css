@@ -2,5 +2,11 @@
   font-size: 2em;
 }
 .top-padding {
-  padding-top: 30vh
+  padding-top: 30vh;
+}
+.remover {
+  position: absolute;
+  margin-top: 20px;
+  margin-left: 10px;
+  color: rgba(0, 0, 0, 0.38);
 }
