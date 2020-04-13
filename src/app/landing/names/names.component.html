@@ -1,0 +1,18 @@
+<div class='top-padding'></div>
+    <div class="row" *ngFor="let name of playerNames.controls; index as i">
+      <div class="col center">
+        <mat-form-field appearance="outline" color="accent">
+          <mat-label>Player Name</mat-label>
+          <!-- <input matInput [(ngModel)]='name' (keyup)='nameChange($event.target.value)'/> -->
+          <input matInput [formControl]="playerNames.controls[i]"/>
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="row lastname" #lastel *ngIf="!isMaxPlayersReached()">
+      <div class="col center">
+        <mat-form-field appearance="outline" color="accent" (click)='addPlayerName()'>
+          <mat-label>+ Add Another Player</mat-label>
+          <input matInput disabled/>
+        </mat-form-field>
+      </div>
+    </div>

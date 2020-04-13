@@ -3,13 +3,6 @@
   height: 100%;
   background-color: white;
 }
-.name {
-  font-size: 2em;
-}
-
-.top-padding {
-  padding-top: 30vh
-}
-.lastname {
+.bottom-padding {
   padding-bottom: 15vh;
 }

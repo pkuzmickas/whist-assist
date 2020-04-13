@@ -17,3 +17,9 @@ body {
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+.center {
+  text-align: center;
+}
+:root {
+  --side-padding: 20vw;
+}

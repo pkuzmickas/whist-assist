@@ -1,23 +1,8 @@
 <app-top></app-top>
 <div class="background">
   <div class="container">
-    <div class='top-padding'></div>
-    <div class="row" *ngFor="let player of players; let i = index">
-      <div class="col center">
-        <mat-form-field appearance="outline" color="accent">
-          <mat-label>Player Name</mat-label>
-          <input matInput [(ngModel)]='players[i].name' (keyup)='nameChange($event.target.value)'/>
-        </mat-form-field>
-      </div>
-    </div>
-    <div class="row lastname">
-      <div class="col center">
-        <mat-form-field appearance="outline" color="accent">
-          <mat-label>Player Name</mat-label>
-          <input matInput disabled />
-        </mat-form-field>
-      </div>
-    </div>
+    <app-names></app-names>
+    <div class="bottom-padding"></div>
   </div>
 </div>
 <app-bottom></app-bottom>
