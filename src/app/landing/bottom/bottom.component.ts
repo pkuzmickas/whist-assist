@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-bottom',
@@ -8,9 +8,13 @@ import { Component, OnInit, Input } from '@angular/core';
 export class BottomComponent {
 
   @Input() stageValid: boolean;
+  @Input() backEnabled: boolean;
+  @Input() button1Text: string;
+  @Input() button2Text: string;
+  @Output() buttonClicked = new EventEmitter();
 
   constructor() { }
-  test() {
-    console.log(this.stageValid);
+  onButtonClick(buttonName) {
+    this.buttonClicked.emit(buttonName);
   }
 }

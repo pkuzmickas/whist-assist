@@ -1,10 +1,15 @@
 <div class="bottom">
+  <div class="container">
   <div class="row bot-buttons">
-    <div class="col center pl-5">
-      <button mat-raised-button color="secondary" class="login">LOGIN</button>
+    <div class="col center pl-3">
+      <button mat-raised-button color="accent" class="setup-button" (click)="onButtonClick('button1')">{{button1Text}}</button>
     </div>
-    <div class="col center pr-5">
-      <button mat-raised-button color="primary" [disabled]="!stageValid" class="login" (click)='test()'>CONTINUE</button>
+    <div *ngIf="backEnabled" class="col center">
+      <button mat-raised-button class="setup-button" (click)="onButtonClick('BACK')">BACK</button>
+    </div>
+    <div class="col center pr-3">
+      <button mat-raised-button color="primary" [disabled]="!stageValid" class="setup-button" (click)="onButtonClick('button2')">{{button2Text}}</button>
     </div>
   </div>
+</div>
 </div>

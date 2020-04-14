@@ -1,8 +1,21 @@
-<app-top></app-top>
+<app-top [text]="getTopTitle()"></app-top>
 <div class="background">
   <div class="container">
-    <app-names (isValid)='onValidityChange($event)' ></app-names>
+    <div class='top-padding'></div>
+    <div [ngSwitch]="currentStage">
+      <app-names
+        *ngSwitchCase="LandingStage.NAME_STAGE"
+        (isValid)="onValidityChange($event)"
+      ></app-names>
+      <div *ngSwitchDefault>MORE GOOD THINGS ARE COMING!</div>
+    </div>
     <div class="bottom-padding"></div>
   </div>
 </div>
-<app-bottom [stageValid]='isStageValid'></app-bottom>
+<app-bottom
+  (buttonClicked)="onBottomButtonClicked($event)"
+  [backEnabled]="currentStage!=LandingStage.NAME_STAGE"
+  [stageValid]="isStageValid"
+  button1Text="LOGIN"
+  [button2Text]="button2Text"
+></app-bottom>
