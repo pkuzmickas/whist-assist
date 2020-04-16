@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef, Output, EventEmitter } from '@angular/core';
+import { Component, ViewChild, ElementRef, Output, EventEmitter, Input, AfterContentInit } from '@angular/core';
 import { FormArray, FormControl, Validators } from '@angular/forms';
 
 @Component({
@@ -6,7 +6,7 @@ import { FormArray, FormControl, Validators } from '@angular/forms';
   templateUrl: './names.component.html',
   styleUrls: ['./names.component.css']
 })
-export class NamesComponent implements OnInit {
+export class NamesComponent implements AfterContentInit {
 
   private playerNames: FormArray;
   readonly MINIMUM_PLAYERS = 3;
@@ -14,17 +14,28 @@ export class NamesComponent implements OnInit {
   full = false;
   @ViewChild('lastel', { static: false }) private lastElement: ElementRef;
   @Output() isValid = new EventEmitter<boolean>();
+  @Input() namesList: Array<string>;
 
-  ngOnInit(): void {
+  constructor() {
     this.playerNames = new FormArray([], [Validators.maxLength(this.MAXIMUM_PLAYERS)]);
-    for (let i = 0; i < this.MINIMUM_PLAYERS; i++) {
-      this.addPlayerName();
+  }
+
+  ngAfterContentInit(): void {
+    if (this.namesList !== undefined && this.namesList.length !== 0) {
+      for (const name of this.namesList) {
+        this.addPlayerName(name);
+      }
+    } else {
+      for (let i = 0; i < this.MINIMUM_PLAYERS; i++) {
+        this.addPlayerName();
+      }
     }
+
     this.playerNames.statusChanges.subscribe((val) => this.isValid.emit(val === 'VALID'));
   }
 
-  addPlayerName() {
-      this.playerNames.push(new FormControl('', [Validators.required]));
+  addPlayerName(name = '') {
+    this.playerNames.push(new FormControl(name, [Validators.required]));
   }
 
   isMaxPlayersReached() {
@@ -33,6 +44,14 @@ export class NamesComponent implements OnInit {
 
   removePlayer(index) {
     this.playerNames.removeAt(index);
+  }
+
+  getNamesList() {
+    const namesList = [];
+    for (const control of this.playerNames.controls) {
+      namesList.push(control.value);
+    }
+    return namesList;
   }
 
 }

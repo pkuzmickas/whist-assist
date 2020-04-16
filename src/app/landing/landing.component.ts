@@ -1,26 +1,29 @@
-import { Component, OnInit } from '@angular/core';
-
-enum LandingStage {
-  NAME_STAGE,
-  OPTIONS_STAGE
-}
+import { Component, OnInit, ViewChild } from '@angular/core';
+import {LandingStage} from './LandingEnum';
+import { NamesComponent } from './names/names.component';
 
 @Component({
   selector: 'app-landing',
   templateUrl: './landing.component.html',
-  styleUrls: ['./landing.component.css']
+  styleUrls: ['./landing.component.css'],
+  providers: []
 })
 
 export class LandingComponent {
   LandingStage = LandingStage; // For HTML to recognise the enum
   currentStage: LandingStage;
   isStageValid: boolean;
-  button2Text: string;
+
+  sessionInfo = {
+    names: []
+  };
+
+  @ViewChild(NamesComponent, {static: false})
+  private namesComponent: NamesComponent;
 
   constructor() {
     this.currentStage = LandingStage.NAME_STAGE;
     this.isStageValid = false;
-    this.button2Text = 'CONTINUE';
   }
   onValidityChange(isValid: boolean) {
     this.isStageValid = isValid;
@@ -32,19 +35,20 @@ export class LandingComponent {
       return 'EXTRA OPTIONS';
     }
   }
-  onBottomButtonClicked(buttonName) {
-    if (buttonName === 'button2') {
-      if (this.currentStage === LandingStage.NAME_STAGE) {
-        this.currentStage = LandingStage.OPTIONS_STAGE;
-        this.button2Text = 'START GAME';
-      }
-    } else if (buttonName === 'BACK') {
-      this.currentStage = LandingStage.NAME_STAGE;
-      this.button2Text = 'CONTINUE';
-    } else if (buttonName === 'button1') {
-
-    }
+  handleBack() {
+    this.currentStage--;
   }
+  handleLogin() {
+
+  }
+  handleContinue() {
+    this.currentStage++;
+    this.sessionInfo.names = this.namesComponent.getNamesList();
+  }
+  handleStart() {
+
+  }
+
 
 }
 

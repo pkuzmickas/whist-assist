@@ -2,13 +2,16 @@
   <div class="container">
   <div class="row bot-buttons">
     <div class="col center pl-3">
-      <button mat-raised-button color="accent" class="setup-button" (click)="onButtonClick('button1')">{{button1Text}}</button>
+      <button mat-raised-button color="accent" class="setup-button" (click)="login.emit()">LOGIN</button>
     </div>
-    <div *ngIf="backEnabled" class="col center">
-      <button mat-raised-button class="setup-button" (click)="onButtonClick('BACK')">BACK</button>
+    <div *ngIf="stage!=LandingStage.NAME_STAGE" class="col center">
+      <button mat-raised-button class="setup-button" (click)="back.emit()">BACK</button>
     </div>
-    <div class="col center pr-3">
-      <button mat-raised-button color="primary" [disabled]="!stageValid" class="setup-button" (click)="onButtonClick('button2')">{{button2Text}}</button>
+    <div *ngIf="stage!=LandingStage.OPTIONS_STAGE" class="col center pr-3">
+      <button mat-raised-button color="primary" [disabled]="!stageValid" class="setup-button" (click)="continue.emit()">CONTINUE</button>
+    </div>
+    <div *ngIf="stage==LandingStage.OPTIONS_STAGE" class="col center pr-3">
+      <button mat-raised-button color="primary" [disabled]="!stageValid" class="setup-button" (click)="startGame.emit()">START GAME</button>
     </div>
   </div>
 </div>

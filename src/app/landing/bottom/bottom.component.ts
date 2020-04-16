@@ -1,4 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { LandingStage } from '../LandingEnum';
 
 @Component({
   selector: 'app-bottom',
@@ -7,14 +8,15 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 })
 export class BottomComponent {
 
+  LandingStage = LandingStage;
+  @Input() stage: LandingStage;
   @Input() stageValid: boolean;
-  @Input() backEnabled: boolean;
-  @Input() button1Text: string;
-  @Input() button2Text: string;
-  @Output() buttonClicked = new EventEmitter();
+  @Output() back = new EventEmitter();
+  @Output() login = new EventEmitter();
+  @Output() continue = new EventEmitter();
+  @Output() startGame = new EventEmitter();
+
 
   constructor() { }
-  onButtonClick(buttonName) {
-    this.buttonClicked.emit(buttonName);
-  }
+
 }

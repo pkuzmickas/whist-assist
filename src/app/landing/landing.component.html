@@ -6,6 +6,7 @@
       <app-names
         *ngSwitchCase="LandingStage.NAME_STAGE"
         (isValid)="onValidityChange($event)"
+        [namesList]="sessionInfo.names"
       ></app-names>
       <div *ngSwitchDefault>MORE GOOD THINGS ARE COMING!</div>
     </div>
@@ -13,9 +14,10 @@
   </div>
 </div>
 <app-bottom
-  (buttonClicked)="onBottomButtonClicked($event)"
-  [backEnabled]="currentStage!=LandingStage.NAME_STAGE"
+  (back)="handleBack()"
+  (login)="handleLogin()"
+  (continue)="handleContinue()"
+  (startGame)="handleStart()"
+  [stage]="currentStage"
   [stageValid]="isStageValid"
-  button1Text="LOGIN"
-  [button2Text]="button2Text"
 ></app-bottom>
