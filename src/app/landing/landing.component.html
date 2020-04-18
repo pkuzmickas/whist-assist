@@ -1,14 +1,14 @@
 <app-top [text]="getTopTitle()"></app-top>
 <div class="background">
   <div class="container">
-    <div class='top-padding'></div>
+    <div class="top-padding"></div>
     <div [ngSwitch]="currentStage">
       <app-names
         *ngSwitchCase="LandingStage.NAME_STAGE"
         (isValid)="onValidityChange($event)"
         [namesList]="sessionInfo.names"
       ></app-names>
-      <div *ngSwitchDefault>MORE GOOD THINGS ARE COMING!</div>
+      <app-options *ngSwitchCase="LandingStage.OPTIONS_STAGE"></app-options>
     </div>
     <div class="bottom-padding"></div>
   </div>

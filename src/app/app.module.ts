@@ -9,14 +9,24 @@ import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 import { LandingComponent } from './landing/landing.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatSelectModule} from '@angular/material/select';
 import { MatSliderModule } from '@angular/material/slider';
 import {MatInputModule} from '@angular/material/input';
 import {MatButtonModule} from '@angular/material/button';
+import {MatButtonToggleModule} from '@angular/material/button-toggle';
+import {MatCardModule} from '@angular/material/card';
+import {MatIconModule} from '@angular/material/icon';
+import {MatToolbarModule} from '@angular/material/toolbar';
+
 import { TopComponent } from './landing/top/top.component';
 import { BottomComponent } from './landing/bottom/bottom.component';
 import { NamesComponent } from './landing/names/names.component';
+import { OptionsComponent } from './landing/options/options.component';
+import { GameComponent } from './game/game.component';
+import { NavbarComponent } from './game/navbar/navbar.component';
+import { GuessesComponent } from './game/guesses/guesses.component';
 
 
 @NgModule({
@@ -25,7 +35,11 @@ import { NamesComponent } from './landing/names/names.component';
     LandingComponent,
     TopComponent,
     BottomComponent,
-    NamesComponent
+    NamesComponent,
+    OptionsComponent,
+    GameComponent,
+    NavbarComponent,
+    GuessesComponent
   ],
   imports: [
     BrowserModule,
@@ -38,7 +52,11 @@ import { NamesComponent } from './landing/names/names.component';
     MatSliderModule,
     MatButtonModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MatButtonToggleModule,
+    MatCardModule,
+    MatToolbarModule,
+    MatIconModule
   ],
   exports: [
     MatSliderModule

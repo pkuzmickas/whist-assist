@@ -11,7 +11,7 @@
       <button mat-raised-button color="primary" [disabled]="!stageValid" class="setup-button" (click)="continue.emit()">CONTINUE</button>
     </div>
     <div *ngIf="stage==LandingStage.OPTIONS_STAGE" class="col center pr-3">
-      <button mat-raised-button color="primary" [disabled]="!stageValid" class="setup-button" (click)="startGame.emit()">START GAME</button>
+      <button routerLink="/play" routerLinkActive="active" mat-raised-button color="primary" [disabled]="!stageValid" class="setup-button" (click)="startGame.emit()">START GAME</button>
     </div>
   </div>
 </div>

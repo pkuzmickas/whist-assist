@@ -1,0 +1,19 @@
+.options-group {
+  font-size: 1.3em;
+  width: 100%;
+}
+.option-buttons {
+  float:right;
+}
+mat-card {
+  margin-top: 15px;
+}
+.option-title {
+  position: absolute;
+  padding-top: 9px;
+}
+p {
+  margin-bottom: 0;
+  padding-left: 10px;
+  padding-right: 10px;
+}

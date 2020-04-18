@@ -1,17 +1,28 @@
-<div class="row" *ngFor="let name of playerNames.controls; index as i">
-  <div class="col center">
-    <mat-form-field appearance="outline" color="accent">
-      <mat-label>Player Name</mat-label>
-      <input matInput [formControl]="playerNames.controls[i]"/>
-    </mat-form-field>
-    <span class='remover' *ngIf="i >= MINIMUM_PLAYERS" (click)='removePlayer(i)'>-----</span>
+<mat-card>
+  <div class="row" *ngFor="let name of playerNames.controls; index as i">
+    <div class="col center">
+      <mat-form-field appearance="outline" color="accent">
+        <mat-label>Player Name</mat-label>
+        <input matInput [formControl]="playerNames.controls[i]" />
+      </mat-form-field>
+      <span
+        class="remover"
+        *ngIf="i >= MINIMUM_PLAYERS"
+        (click)="removePlayer(i)"
+        ><i class="material-icons">highlight_off</i>
+      </span>
+    </div>
   </div>
-</div>
-<div class="row lastname" #lastel *ngIf="!isMaxPlayersReached()">
-  <div class="col center">
-    <mat-form-field appearance="outline" color="accent" (click)='addPlayerName()'>
-      <mat-label>+ Add Another Player</mat-label>
-      <input matInput disabled/>
-    </mat-form-field>
+  <div class="row lastname" #lastel *ngIf="!isMaxPlayersReached()">
+    <div class="col center">
+      <mat-form-field
+        appearance="outline"
+        color="accent"
+        (click)="addPlayerName()"
+      >
+        <mat-label>+ Add Another Player</mat-label>
+        <input matInput disabled />
+      </mat-form-field>
+    </div>
   </div>
-</div>
+</mat-card>

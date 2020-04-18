@@ -4,8 +4,15 @@
   background-color: white;
 }
 .bottom-padding {
-  padding-bottom: 15vh;
+  height: 16vh;
 }
 .top-padding {
   padding-top: 30vh;
+}
+/* For Desktop */
+@media only screen and (min-width: 768px) {
+  .container {
+    padding-left: var(--side-padding);
+    padding-right: var(--side-padding);
+  }
 }
