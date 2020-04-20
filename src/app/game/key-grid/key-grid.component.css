@@ -1,0 +1,17 @@
+.grid {
+  position: absolute;
+  bottom: 1vh;
+  left: 19vw;
+  right: 19vw;
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
+.key-button {
+  font-size: 2em;
+  min-width: 20vw !important;
+  min-height: 10vh !important;
+}
+.col {
+  padding: 0;
+}
