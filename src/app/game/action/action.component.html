@@ -7,8 +7,8 @@
   <div class="row">
     <table mat-table [dataSource]="dataSource">
       <ng-container matColumnDef="predicted">
-        <th mat-header-cell *matHeaderCellDef>Predicted</th>
-        <td mat-cell *matCellDef="let element">{{ element.predicted }}</td>
+        <th class='black-text' mat-header-cell *matHeaderCellDef>Predicted</th>
+        <td class='highlight' mat-cell *matCellDef="let element">{{ element.predicted }}</td>
       </ng-container>
 
       <ng-container matColumnDef="got">

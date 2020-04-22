@@ -1,18 +1,19 @@
-import { Component, ViewChild, ElementRef, Output, EventEmitter, Input, AfterContentInit } from '@angular/core';
+import { Component, ViewChild, ElementRef, Output, EventEmitter, Input, AfterContentInit, OnInit, OnDestroy } from '@angular/core';
 import { FormArray, FormControl, Validators } from '@angular/forms';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-names',
   templateUrl: './names.component.html',
   styleUrls: ['./names.component.css']
 })
-export class NamesComponent implements AfterContentInit {
+export class NamesComponent implements OnInit, OnDestroy {
 
   private playerNames: FormArray;
   readonly MINIMUM_PLAYERS = 3;
   readonly MAXIMUM_PLAYERS = 6;
   full = false;
-  @ViewChild('lastel', { static: false }) private lastElement: ElementRef;
+  validSub: Subscription;
   @Output() isValid = new EventEmitter<boolean>();
   @Input() namesList: Array<string>;
 
@@ -20,7 +21,11 @@ export class NamesComponent implements AfterContentInit {
     this.playerNames = new FormArray([], [Validators.maxLength(this.MAXIMUM_PLAYERS)]);
   }
 
-  ngAfterContentInit(): void {
+  ngOnDestroy(): void {
+    this.validSub.unsubscribe();
+  }
+
+  ngOnInit(): void {
     if (this.namesList !== undefined && this.namesList.length !== 0) {
       for (const name of this.namesList) {
         this.addPlayerName(name);
@@ -30,8 +35,7 @@ export class NamesComponent implements AfterContentInit {
         this.addPlayerName();
       }
     }
-
-    this.playerNames.statusChanges.subscribe((val) => this.isValid.emit(val === 'VALID'));
+    this.validSub = this.playerNames.statusChanges.subscribe((val) => this.isValid.emit(val === 'VALID'));
   }
 
   addPlayerName(name = '') {
@@ -53,5 +57,6 @@ export class NamesComponent implements AfterContentInit {
     }
     return namesList;
   }
+
 
 }

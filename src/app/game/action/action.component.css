@@ -26,3 +26,9 @@ mat-card {
   text-align: center;
   padding-right: 0!important;
 }
+.highlight {
+  background-color:#ffc1067a;
+}
+.black-text {
+  color:black;
+}

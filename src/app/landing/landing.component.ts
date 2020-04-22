@@ -1,6 +1,8 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import {LandingStage} from './LandingEnum';
 import { NamesComponent } from './names/names.component';
+import { OptionsComponent } from './options/options.component';
+import { GameDataService } from '../game-data.service';
 
 @Component({
   selector: 'app-landing',
@@ -14,14 +16,17 @@ export class LandingComponent {
   currentStage: LandingStage;
   isStageValid: boolean;
 
-  sessionInfo = {
-    names: []
+  pregameInfo = {
+    names: [],
+    style: '181',
+    bonus: '5'
   };
 
-  @ViewChild(NamesComponent, {static: false})
-  private namesComponent: NamesComponent;
+  @ViewChild(NamesComponent, {static: false}) private namesComponent: NamesComponent;
+  @ViewChild(OptionsComponent, {static: false}) private optionsComponent: OptionsComponent;
 
-  constructor() {
+
+  constructor(private gameData: GameDataService) {
     this.currentStage = LandingStage.NAME_STAGE;
     this.isStageValid = false;
   }
@@ -37,16 +42,23 @@ export class LandingComponent {
   }
   handleBack() {
     this.currentStage--;
+    const options = this.optionsComponent.getOptions();
+    this.pregameInfo.bonus = options.bonus;
+    this.pregameInfo.style = options.style;
   }
   handleLogin() {
 
   }
   handleContinue() {
     this.currentStage++;
-    this.sessionInfo.names = this.namesComponent.getNamesList();
+    this.pregameInfo.names = this.namesComponent.getNamesList();
   }
   handleStart() {
-
+    this.gameData.options = {
+      bonusAmount: +this.pregameInfo.bonus,
+      playStyle: this.pregameInfo.style
+    };
+    this.gameData.addPlayers(this.pregameInfo.names);
   }
 
 

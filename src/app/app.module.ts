@@ -19,6 +19,7 @@ import {MatButtonToggleModule} from '@angular/material/button-toggle';
 import {MatCardModule} from '@angular/material/card';
 import {MatIconModule} from '@angular/material/icon';
 import {MatToolbarModule} from '@angular/material/toolbar';
+import {MatTableModule} from '@angular/material/table';
 
 import { TopComponent } from './landing/top/top.component';
 import { BottomComponent } from './landing/bottom/bottom.component';
@@ -27,6 +28,8 @@ import { OptionsComponent } from './landing/options/options.component';
 import { GameComponent } from './game/game.component';
 import { NavbarComponent } from './game/navbar/navbar.component';
 import { GuessesComponent } from './game/guesses/guesses.component';
+import { ActionComponent } from './game/action/action.component';
+import { KeyGridComponent } from './game/key-grid/key-grid.component';
 
 
 @NgModule({
@@ -39,7 +42,9 @@ import { GuessesComponent } from './game/guesses/guesses.component';
     OptionsComponent,
     GameComponent,
     NavbarComponent,
-    GuessesComponent
+    GuessesComponent,
+    ActionComponent,
+    KeyGridComponent
   ],
   imports: [
     BrowserModule,
@@ -56,7 +61,8 @@ import { GuessesComponent } from './game/guesses/guesses.component';
     MatButtonToggleModule,
     MatCardModule,
     MatToolbarModule,
-    MatIconModule
+    MatIconModule,
+    MatTableModule
   ],
   exports: [
     MatSliderModule

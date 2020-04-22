@@ -6,9 +6,10 @@
         class="option-buttons"
         name="fontStyle"
         aria-label="Font Style"
+        (change)='bonusChange($event)'
       >
-        <mat-button-toggle checked value="5">5</mat-button-toggle>
-        <mat-button-toggle value="10">10</mat-button-toggle>
+        <mat-button-toggle checked="{{bonus==='5'}}" value="5">5</mat-button-toggle>
+        <mat-button-toggle checked="{{bonus==='10'}}" value="10">10</mat-button-toggle>
       </mat-button-toggle-group>
     </p>
   </div>
@@ -21,9 +22,10 @@
         class="option-buttons"
         name="fontStyle"
         aria-label="Font Style"
+        (change)='styleChange($event)'
       >
-        <mat-button-toggle checked value="181">1-8-1</mat-button-toggle>
-        <mat-button-toggle value="818">8-1-8</mat-button-toggle>
+        <mat-button-toggle checked="{{style==='181'}}" value="181">1-8-1</mat-button-toggle>
+        <mat-button-toggle checked="{{style==='818'}}" value="818">8-1-8</mat-button-toggle>
       </mat-button-toggle-group>
     </p>
   </div>
