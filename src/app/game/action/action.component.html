@@ -1,19 +1,25 @@
 <mat-card>
   <div class="row">
     <div class="col text-center">
-      <span class="name">PAULIUS</span>
+      <span [class.disabled]='!leftEnabled' class="arrow material-icons" (click)='previousCard()'>arrow_back</span>
+    </div>
+    <div class="col text-center">
+      <span class="name">{{playerName}}</span>
+    </div>
+    <div class="col text-center">
+      <span [class.disabled]='!rightEnabled' class="arrow material-icons" (click)='nextCard()'>arrow_forward</span>
     </div>
   </div>
   <div class="row">
     <table mat-table [dataSource]="dataSource">
       <ng-container matColumnDef="predicted">
-        <th class='black-text' mat-header-cell *matHeaderCellDef>Predicted</th>
-        <td class='highlight' mat-cell *matCellDef="let element">{{ element.predicted }}</td>
+        <th [class.black]="gameData.currentStage === GameStages.GUESS_STAGE" mat-header-cell *matHeaderCellDef>Predicted</th>
+        <td [class.highlight]="gameData.currentStage === GameStages.GUESS_STAGE" mat-cell *matCellDef="let element">{{ element.predicted }}</td>
       </ng-container>
 
       <ng-container matColumnDef="got">
-        <th mat-header-cell *matHeaderCellDef>Got</th>
-        <td mat-cell *matCellDef="let element">{{ element.got }}</td>
+        <th [class.black]="gameData.currentStage === GameStages.GOT_STAGE" mat-header-cell *matHeaderCellDef>Got</th>
+        <td [class.highlight]="gameData.currentStage === GameStages.GOT_STAGE" mat-cell *matCellDef="let element">{{ element.got }}</td>
       </ng-container>
 
       <ng-container matColumnDef="score">

@@ -59,6 +59,7 @@ export class LandingComponent {
       playStyle: this.pregameInfo.style
     };
     this.gameData.addPlayers(this.pregameInfo.names);
+    this.gameData.initGame();
   }
 
 

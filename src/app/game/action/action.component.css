@@ -9,6 +9,13 @@ mat-card {
 .name {
   font-size: 1.3em;
 }
+.arrow {
+  font-size: 2em;
+  color: #2196f3;
+}
+.disabled {
+  color: gray;
+}
 .mat-column-predicted {
   text-align: center;
   border-right-width: 1px;
@@ -29,6 +36,6 @@ mat-card {
 .highlight {
   background-color:#ffc1067a;
 }
-.black-text {
+.black {
   color:black;
 }

@@ -1,40 +1,15 @@
 <mat-card>
   <div class="row">
     <div class="col text-center">
-      <span class='title'>PREDICTIONS</span>
+      <span class='title'>{{getTitle()}}</span>
     </div>
   </div>
   <hr>
   <div class="row">
-    <div class="col center">
-      <span>Paulius</span>
+    <div *ngFor="let roundInfo of roundInformation" class="col center">
+    <span>{{roundInfo.name}}</span>
       <br>
-      <span>1</span>
+      <span>{{roundInfo.info}}</span>
     </div>
-    <div class="col center">
-      <span>Ioan</span>
-      <br>
-      <span>1</span>
-    </div>
-    <div class="col center">
-      <span>Radu</span>
-      <br>
-      <span>1</span>
-    </div>
-    <div class="col center">
-      <span>Dwayne</span>
-      <br>
-      <span>1</span>
-    </div>
-    <!-- <div class="col center">
-      <span>Paulius</span>
-      <br>
-      <span>1</span>
-    </div>
-    <div class="col center">
-      <span>Paulius</span>
-      <br>
-      <span>1</span>
-    </div> -->
   </div>
 </mat-card>
