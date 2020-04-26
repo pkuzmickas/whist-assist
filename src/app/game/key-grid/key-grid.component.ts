@@ -1,4 +1,5 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { GameDataService } from 'src/app/game-data.service';
 
 @Component({
   selector: 'app-key-grid',
@@ -11,7 +12,7 @@ export class KeyGridComponent implements OnInit {
 
   @Output() clicked = new EventEmitter<number>();
 
-  constructor() { }
+  constructor(public gameData: GameDataService) { }
 
   ngOnInit() {
   }

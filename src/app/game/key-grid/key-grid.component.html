@@ -1,7 +1,7 @@
 <mat-card class="grid">
     <div *ngFor="let btn of buttons; index as i" class="row">
       <div *ngFor="let rowbtn of buttons; index as j" class="col">
-        <button (click)='clicked.emit(i*3+j)' class="key-button" mat-stroked-button>{{i*3+j}}</button>
+        <button [disabled]='i*3+j>gameData.roundOf' (click)='clicked.emit(i*3+j)' class="key-button" mat-stroked-button>{{i*3+j}}</button>
       </div>
     </div>
 </mat-card>

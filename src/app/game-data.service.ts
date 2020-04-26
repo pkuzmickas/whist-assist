@@ -13,6 +13,7 @@ export class GameDataService {
   playerNames: Array<string> = [];
   currentPlayerId: number;
   currentStage: GameStages = GameStages.GUESS_STAGE;
+  roundOf = 1;
 
   constructor() { }
 
@@ -36,19 +37,30 @@ export class GameDataService {
     }
   }
   addGuess(amount) {
-    if (this.isOnNewestStep()) {
-      this.roundPredictions.set(this.playerNames[this.currentPlayerId], amount);
+    const onNewestStep = this.isOnNewestStep();
+    const playerName = this.playerNames[this.currentPlayerId];
+    const got = this.roundGots.get(playerName);
+    if (got !== undefined) {
+      this.players.get(playerName).totalScore -= this.calculateScore();
+    }
+    this.roundPredictions.set(playerName, amount);
+    if (got !== undefined) {
+      this.players.get(playerName).totalScore += this.calculateScore();
+    }
+    if (onNewestStep) {
       this.nextPlayer();
-    } else {
-      this.roundPredictions.set(this.playerNames[this.currentPlayerId], amount);
     }
   }
   addGot(amount) {
-    if (this.isOnNewestStep()) {
-      this.roundGots.set(this.playerNames[this.currentPlayerId], amount);
+    const onNewestStep = this.isOnNewestStep();
+    const playerName = this.playerNames[this.currentPlayerId];
+    if (!onNewestStep) {
+      this.players.get(playerName).totalScore -= this.calculateScore();
+    }
+    this.roundGots.set(playerName, amount);
+    this.players.get(playerName).totalScore += this.calculateScore();
+    if (onNewestStep) {
       this.nextPlayer();
-    } else {
-      this.roundGots.set(this.playerNames[this.currentPlayerId], amount);
     }
   }
   previousPlayer() {
@@ -66,6 +78,20 @@ export class GameDataService {
   getNewestStage(): GameStages {
     const stepsTaken = this.roundPredictions.size + this.roundGots.size;
     return Math.floor(stepsTaken / this.playerNames.length);
+  }
+  calculateScore(playerName?) {
+    if (playerName === undefined) {
+      playerName = this.playerNames[this.currentPlayerId];
+    }
+    let roundPoints = 0;
+    const got = this.roundGots.get(playerName);
+    const predicted = this.roundPredictions.get(playerName);
+    if (got === predicted) {
+      roundPoints += 5 + got;
+    } else {
+      roundPoints -= Math.abs(got - predicted);
+    }
+    return roundPoints;
   }
 }
 
