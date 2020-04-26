@@ -27,7 +27,11 @@ export class GameComponent implements OnInit {
   }
 
   updateCardsWithGuess() {
-    this.guessComponent.updatePredictions();
+    if(this.gameData.getNewestStage() === GameStages.GUESS_STAGE) {
+      this.guessComponent.updatePredictions();
+    } else if (this.gameData.getNewestStage() === GameStages.GOT_STAGE) {
+      this.guessComponent.updateScores();
+    }
     this.actionComponent.updateCard();
   }
   updateCardsWithGot() {

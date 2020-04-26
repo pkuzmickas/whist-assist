@@ -37,15 +37,19 @@ export class GameDataService {
   }
   addGuess(amount) {
     if (this.isOnNewestStep()) {
+      this.roundPredictions.set(this.playerNames[this.currentPlayerId], amount);
       this.nextPlayer();
+    } else {
+      this.roundPredictions.set(this.playerNames[this.currentPlayerId], amount);
     }
-    this.roundPredictions.set(this.playerNames[this.currentPlayerId], amount);
   }
   addGot(amount) {
     if (this.isOnNewestStep()) {
+      this.roundGots.set(this.playerNames[this.currentPlayerId], amount);
       this.nextPlayer();
+    } else {
+      this.roundGots.set(this.playerNames[this.currentPlayerId], amount);
     }
-    this.roundGots.set(this.playerNames[this.currentPlayerId], amount);
   }
   previousPlayer() {
     this.currentPlayerId -= 1;
@@ -58,6 +62,10 @@ export class GameDataService {
     const stepsTaken = this.roundPredictions.size + this.roundGots.size;
     const curStep = this.currentStage * this.playerNames.length + this.currentPlayerId;
     return stepsTaken === curStep;
+  }
+  getNewestStage(): GameStages {
+    const stepsTaken = this.roundPredictions.size + this.roundGots.size;
+    return Math.floor(stepsTaken / this.playerNames.length);
   }
 }
 

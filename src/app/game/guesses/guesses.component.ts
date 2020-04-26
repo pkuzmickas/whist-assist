@@ -22,11 +22,11 @@ export class GuessesComponent implements OnInit {
   }
 
   getTitle() {
-    switch (this.gameData.currentStage) {
+    switch (this.gameData.getNewestStage()) {
       case GameStages.GUESS_STAGE:
         return 'PREDICTIONS';
       case GameStages.GOT_STAGE:
-        return 'SCORES';
+        return 'ROUND SCORES';
     }
   }
 
@@ -41,7 +41,6 @@ export class GuessesComponent implements OnInit {
   }
 
   updateScores() {
-    console.log(this.gameData.roundPredictions);
     this.roundInformation = [];
     for (const playerName of this.gameData.roundGots.keys()) {
       const info = this.gameData.roundPredictions.get(playerName).toString() + ' | '
