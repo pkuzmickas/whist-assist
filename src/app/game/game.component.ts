@@ -11,6 +11,8 @@ import { GameStages } from '../GameStages';
 })
 export class GameComponent implements OnInit {
 
+  GameStages = GameStages;
+
   @ViewChild(GuessesComponent, { static: false }) guessComponent: GuessesComponent;
   @ViewChild(ActionComponent, { static: false }) actionComponent: ActionComponent;
 
@@ -23,6 +25,7 @@ export class GameComponent implements OnInit {
     */
     this.gameData.initGame();
     this.gameData.addPlayers(['Paulius', 'Ignas', 'Ioan']);
+    this.gameData.currentStage = GameStages.FINAL_STAGE;
     console.log(this.gameData.players);
   }
 

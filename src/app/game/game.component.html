@@ -1,6 +1,13 @@
 <app-navbar [roundNumber]="gameData.roundOf"></app-navbar>
 <div class="container">
-  <app-guesses></app-guesses>
-  <app-action></app-action>
-  <app-key-grid (clicked)='keyClicked($event)'></app-key-grid>
+  <div [ngSwitch]="gameData.currentStage">
+    <div *ngSwitchCase="GameStages.FINAL_STAGE">
+      <app-leaderboard></app-leaderboard>
+    </div>
+    <div *ngSwitchDefault>
+      <app-guesses></app-guesses>
+      <app-action></app-action>
+      <app-key-grid (clicked)='keyClicked($event)'></app-key-grid>
+    </div>
+  </div>
 </div>
