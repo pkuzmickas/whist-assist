@@ -1,0 +1,14 @@
+<mat-card
+  [style.font-size]="size"
+  [class.primary-color-bg]='primary!==undefined'
+  class="scorebox"
+>
+  <span class="rank">{{ rank }}</span>
+  <div class="name-score">
+    <span class="name">{{ name }}</span>
+    <br />
+    <span class="score"
+      >SCORE: <span class="score-number">{{ score }}</span></span
+    >
+  </div>
+</mat-card>

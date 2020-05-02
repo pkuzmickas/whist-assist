@@ -3,6 +3,7 @@ import { GuessesComponent } from './guesses/guesses.component';
 import { ActionComponent } from './action/action.component';
 import { GameDataService } from '../game-data.service';
 import { GameStages } from '../GameStages';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-game',
@@ -16,7 +17,7 @@ export class GameComponent implements OnInit {
   @ViewChild(GuessesComponent, { static: false }) guessComponent: GuessesComponent;
   @ViewChild(ActionComponent, { static: false }) actionComponent: ActionComponent;
 
-  constructor(private gameData: GameDataService) {
+  constructor(private gameData: GameDataService, private router: Router) {
 
   }
   ngOnInit(): void {
@@ -24,11 +25,14 @@ export class GameComponent implements OnInit {
       TESTING
     */
     this.gameData.initGame();
-    this.gameData.addPlayers(['Paulius', 'Ignas', 'Ioan']);
-    this.gameData.currentStage = GameStages.FINAL_STAGE;
-    console.log(this.gameData.players);
+    // this.gameData.addPlayers(['Paulius', 'Ignas', 'Ioan']);
+    // this.gameData.currentStage = GameStages.FINAL_STAGE;
+    console.log(this.gameData.options);
   }
-
+  newGame() {
+    this.gameData.newGame();
+    this.router.navigate(['/']);
+  }
   updateCardsWithGuess() {
     if(this.gameData.getNewestStage() === GameStages.GUESS_STAGE) {
       this.guessComponent.updatePredictions();
@@ -54,6 +58,7 @@ export class GameComponent implements OnInit {
         break;
     }
   }
+
 
 
 }

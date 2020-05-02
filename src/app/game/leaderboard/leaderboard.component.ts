@@ -1,4 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
+import { GameDataService } from 'src/app/game-data.service';
+import { LeaderboardEntry } from 'src/app/LeaderboardEntry';
+import { GameStages } from 'src/app/GameStages';
 
 @Component({
   selector: 'app-leaderboard',
@@ -7,9 +10,17 @@ import { Component, OnInit } from '@angular/core';
 })
 export class LeaderboardComponent implements OnInit {
 
-  constructor() { }
+  @Input() title = 'LEADERBOARD';
+
+  GameStages = GameStages;
+  totalLeaderboard: Array<LeaderboardEntry>;
+  subLeaderboard: Array<LeaderboardEntry>;
+
+  constructor(private gameData: GameDataService) { }
 
   ngOnInit() {
+    this.totalLeaderboard = this.gameData.getLeaderboard();
+    this.subLeaderboard = this.totalLeaderboard.slice(3);
   }
 
 }

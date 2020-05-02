@@ -30,6 +30,9 @@ import { NavbarComponent } from './game/navbar/navbar.component';
 import { GuessesComponent } from './game/guesses/guesses.component';
 import { ActionComponent } from './game/action/action.component';
 import { KeyGridComponent } from './game/key-grid/key-grid.component';
+import { LeaderboardComponent } from './game/leaderboard/leaderboard.component';
+import { ScoreCardComponent } from './game/score-card/score-card.component';
+import { HighlightDirective } from './highlight.directive';
 
 
 @NgModule({
@@ -44,7 +47,10 @@ import { KeyGridComponent } from './game/key-grid/key-grid.component';
     NavbarComponent,
     GuessesComponent,
     ActionComponent,
-    KeyGridComponent
+    KeyGridComponent,
+    LeaderboardComponent,
+    ScoreCardComponent,
+    HighlightDirective
   ],
   imports: [
     BrowserModule,

@@ -8,3 +8,11 @@ app-action {
   padding-top: 20px;
   margin-top: 20px;
 }
+.continue {
+  flex:1;
+  margin-top: 10vh;
+  margin-bottom: 10vh;
+}
+.buttoncont {
+  display: flex;
+}

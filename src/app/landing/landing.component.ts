@@ -54,9 +54,10 @@ export class LandingComponent {
     this.pregameInfo.names = this.namesComponent.getNamesList();
   }
   handleStart() {
+    const options = this.optionsComponent.getOptions();
     this.gameData.options = {
-      bonusAmount: +this.pregameInfo.bonus,
-      playStyle: this.pregameInfo.style
+      bonusAmount: +options.bonus,
+      playStyle: options.style
     };
     this.gameData.addPlayers(this.pregameInfo.names);
     this.gameData.initGame();

@@ -1,0 +1,18 @@
+.scorebox {
+  display: flex;
+  text-align: center;
+  margin-top: 20px;
+}
+.rank {
+  flex: 1;
+  font-size: 2em;
+}
+.name-score {
+  flex: 2;
+}
+.name {
+  font-size:1.4em;
+}
+.score{
+  font-size: 1em;
+}

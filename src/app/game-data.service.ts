@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { GameStages } from './GameStages';
+import { LeaderboardEntry } from './LeaderboardEntry';
 
 @Injectable({
   providedIn: 'root'
@@ -13,9 +14,16 @@ export class GameDataService {
   playerNames: Array<string> = [];
   currentPlayerId: number;
   currentStage: GameStages = GameStages.GUESS_STAGE;
-  roundOf = 1;
+  roundOf;
+  completedRoundsInRound = 0;
+  goingUp;
+  loopDone = false;
+  constructor() {
+    //TESTING
+    // this.options = {  playStyle: '181', bonusAmount: 5 };
 
-  constructor() { }
+
+  }
 
   addPlayers(names: Array<string>) {
     for (const name of names) {
@@ -29,11 +37,24 @@ export class GameDataService {
   }
   initGame() {
     this.currentPlayerId = 0;
+    if (this.options.playStyle === '818') {
+      this.roundOf = 8;
+      this.goingUp = false;
+    } else {
+      this.roundOf = 1;
+      this.goingUp = true;
+    }
   }
   nextPlayer() {
     this.currentPlayerId = (this.currentPlayerId + 1) % this.playerNames.length;
     if (this.currentPlayerId === 0) { // next stage
       this.currentStage++;
+      if (this.currentStage === GameStages.FINAL_STAGE) {
+        if ((this.options.playStyle === '181' && this.roundOf === 1 && this.completedRoundsInRound === this.players.size - 1 && this.loopDone)
+          || (this.options.playStyle === '818' && this.roundOf === 8 && this.completedRoundsInRound === this.players.size - 1 && this.loopDone)) {
+          this.currentStage = GameStages.GAME_OVER;
+        }
+      }
     }
   }
   addGuess(amount) {
@@ -92,6 +113,73 @@ export class GameDataService {
       roundPoints -= Math.abs(got - predicted);
     }
     return roundPoints;
+  }
+  scoreCompareFunction(playerA: LeaderboardEntry, playerB: LeaderboardEntry) {
+    if (playerA.score > playerB.score) {
+      return -1;
+    }
+    if (playerA.score < playerB.score) {
+      return 1;
+    }
+    return 0;
+  }
+  getLeaderboard(): Array<LeaderboardEntry> {
+    const leaderboard: Array<LeaderboardEntry> = [];
+    for (const playerName of this.players.keys()) {
+      leaderboard.push({
+        score: this.players.get(playerName).totalScore,
+        name: playerName
+      });
+    }
+    leaderboard.sort(this.scoreCompareFunction);
+    return leaderboard;
+  }
+  newGame() {
+    this.currentStage = 0;
+    this.roundGots.clear();
+    this.roundPredictions.clear();
+    this.players.clear();
+    this.playerNames = [];
+    this.roundOf = 1;
+    this.loopDone = false;
+    this.completedRoundsInRound = 0;
+  }
+  nextRound() {
+
+    this.currentStage = GameStages.GUESS_STAGE;
+    this.roundGots.clear();
+    this.roundPredictions.clear();
+    this.currentPlayerId = 0;
+    let addingRound = true;
+    if (this.roundOf === 1 || this.roundOf === 8) {
+      this.completedRoundsInRound++;
+      addingRound = false;
+      if (this.completedRoundsInRound === this.players.size) {
+        addingRound = true;
+        this.completedRoundsInRound = 0;
+        if (this.roundOf === 1) {
+          this.goingUp = true;
+          if (this.options.playStyle === '818') {
+            this.loopDone = true;
+          } else if (this.loopDone) {
+
+          }
+        } else if (this.roundOf === 8) {
+          this.goingUp = false;
+          if (this.options.playStyle === '181') {
+            this.loopDone = true;
+          }
+        }
+      }
+    }
+    console.log(this.roundOf);
+    console.log(addingRound);
+    console.log(this.goingUp);
+
+    if (addingRound) {
+      this.goingUp ? this.roundOf++ : this.roundOf--;
+    }
+    console.log(this.roundOf);
   }
 }
 
