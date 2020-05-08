@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { GameDataService } from 'src/app/game-data.service';
 import { GameStages } from 'src/app/GameStages';
@@ -19,6 +19,9 @@ export class ActionComponent implements OnInit {
   dataSource = new MatTableDataSource<ScoreTrio>(this.tableData);
   leftEnabled = false;
   rightEnabled = true;
+
+  @Output() cardChanged = new EventEmitter();
+
   constructor(public gameData: GameDataService) { }
 
   ngOnInit(): void {
@@ -58,12 +61,14 @@ export class ActionComponent implements OnInit {
   }
 
   previousCard() {
+    this.cardChanged.emit();
     if(this.leftEnabled) {
       this.gameData.previousPlayer();
       this.updateCard();
     }
   }
   nextCard() {
+    this.cardChanged.emit();
     if(this.rightEnabled) {
       this.gameData.nextPlayer();
       this.updateCard();

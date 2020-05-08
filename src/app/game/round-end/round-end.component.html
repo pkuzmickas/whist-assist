@@ -6,8 +6,16 @@
       </mat-card>
     </div>
   </div>
+  <div *ngIf="invalid" class="row">
+    <div class="col">
+      <mat-card class="error-card">
+        <span>Incorrect scores, someone lied!<br>Find the pizma.</span
+        >
+      </mat-card>
+    </div>
+  </div>
   <div class="row" *ngFor="let result of roundResults">
-    <div class="col" >
+    <div class="col">
       <app-round-card
         [playerName]="result.name"
         [predicted]="result.predicted"

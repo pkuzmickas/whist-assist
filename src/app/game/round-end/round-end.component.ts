@@ -10,6 +10,7 @@ import { RoundResult } from 'src/app/RoundResults';
 export class RoundEndComponent implements OnInit {
 
   roundResults: Array<RoundResult> = [];
+  invalid = false;
 
   constructor(private gameData: GameDataService) { }
 
@@ -24,6 +25,7 @@ export class RoundEndComponent implements OnInit {
         diff: this.gameData.roundPoints.get(name).toString()
       });
     }
+    this.invalid = !this.gameData.checkRoundValidity();
   }
 
 }

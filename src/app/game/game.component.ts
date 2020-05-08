@@ -13,6 +13,7 @@ import { Router } from '@angular/router';
 export class GameComponent implements OnInit {
 
   GameStages = GameStages;
+  invalidGuessKey: number;
 
   @ViewChild(GuessesComponent, { static: false }) guessComponent: GuessesComponent;
   @ViewChild(ActionComponent, { static: false }) actionComponent: ActionComponent;
@@ -51,12 +52,26 @@ export class GameComponent implements OnInit {
       case GameStages.GUESS_STAGE:
         this.gameData.addGuess(key);
         this.updateCardsWithGuess();
+        this.invalidGuessKeyHandler();
         break;
       case GameStages.GOT_STAGE:
         this.gameData.addGot(key);
         this.updateCardsWithGot();
         break;
     }
+  }
+
+  invalidGuessKeyHandler() {
+    if (this.gameData.isOnLastStepOfStage()) {
+      this.invalidGuessKey = this.gameData.getNotViableGuess();
+    } else {
+      this.invalidGuessKey = undefined;
+    }
+    console.log('last step? ', this.gameData.isOnLastStepOfStage());
+  }
+
+  isRoundValid() {
+    return this.gameData.checkRoundValidity();
   }
 
   previousStage() {

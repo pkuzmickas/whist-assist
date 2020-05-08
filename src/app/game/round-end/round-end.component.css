@@ -4,3 +4,11 @@
 .title {
   font-size: 1.3em;
 }
+.error-card {
+  background-color: #f44336;
+  text-align: center;
+}
+
+mat-card {
+  margin-top: 10px;
+}

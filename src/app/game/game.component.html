@@ -5,7 +5,7 @@
       <app-round-end></app-round-end>
       <div class='buttoncont pt-4 pb-4'>
         <button (click)='previousStage()' class="continue" mat-raised-button color="accent">BACK</button>
-        <button (click)='nextStage()' class="continue" mat-raised-button color="accent">CONTINUE</button>
+        <button [disabled]='!isRoundValid()' (click)='nextStage()' class="continue" mat-raised-button color="accent">CONTINUE</button>
       </div>
     </div>
     <div *ngSwitchCase="GameStages.FINAL_STAGE">
@@ -22,8 +22,8 @@
     </div>
     <div *ngSwitchDefault>
       <app-guesses></app-guesses>
-      <app-action></app-action>
-      <app-key-grid (clicked)='keyClicked($event)'></app-key-grid>
+      <app-action (cardChanged)='invalidGuessKeyHandler()'></app-action>
+      <app-key-grid [disabledGuess]='invalidGuessKey' (clicked)='keyClicked($event)'></app-key-grid>
     </div>
   </div>
 </div>

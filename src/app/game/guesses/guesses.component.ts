@@ -43,9 +43,12 @@ export class GuessesComponent implements OnInit {
   updateScores() {
     this.roundInformation = [];
     for (const playerName of this.gameData.roundGots.keys()) {
+      let points = this.gameData.roundPoints.get(playerName).toString();
+      points = +points >= 0 ? '+' + points : points;
       const info = this.gameData.roundPredictions.get(playerName).toString() + ' | '
         + this.gameData.roundGots.get(playerName).toString() + ' | '
-        + this.gameData.players.get(playerName).totalScore.toString();
+        + this.gameData.players.get(playerName).totalScore.toString()
+        + ' (' + points + ')';
       this.roundInformation.push({
         name: playerName,
         info
