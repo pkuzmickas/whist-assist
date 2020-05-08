@@ -8,7 +8,7 @@
         (isValid)="onValidityChange($event)"
         [namesList]="pregameInfo.names"
       ></app-names>
-      <app-options [style]='pregameInfo.style' [bonus]='pregameInfo.bonus' *ngSwitchCase="LandingStage.OPTIONS_STAGE"></app-options>
+      <app-options [style]='pregameInfo.style' [bonus]='pregameInfo.bonus' [penalty]='pregameInfo.penalty' *ngSwitchCase="LandingStage.OPTIONS_STAGE"></app-options>
     </div>
     <div class="bottom-padding"></div>
   </div>

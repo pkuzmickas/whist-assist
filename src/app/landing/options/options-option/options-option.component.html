@@ -1,0 +1,15 @@
+<mat-card>
+  <div class="row">
+    <p class="options-group">
+      <span class="option-title">{{name}}</span>
+      <mat-button-toggle-group
+        class="option-buttons"
+        name="fontStyle"
+        aria-label="Font Style"
+        (change)='change($event)'
+      >
+      <mat-button-toggle *ngFor="let toggle of toggles" checked="{{curVal===toggle}}" value="{{toggle}}">{{toggle}}</mat-button-toggle>
+      </mat-button-toggle-group>
+    </p>
+  </div>
+</mat-card>

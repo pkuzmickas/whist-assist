@@ -1,5 +1,4 @@
 import { Component, OnInit, ViewChild, ElementRef, Input } from '@angular/core';
-import { MatButtonToggleGroup } from '@angular/material/button-toggle';
 
 @Component({
   selector: 'app-options',
@@ -10,11 +9,16 @@ export class OptionsComponent {
 
   @Input() style: string;
   @Input() bonus: string;
+  @Input() penalty: string;
+
+  bonusOptions = ['5', '10'];
+  penaltyOptions = ['0', '5', '10'];
+  styleOptions = ['181', '818'];
 
   constructor() { }
 
   getOptions() {
-    return { style: this.style, bonus: this.bonus };
+    return { style: this.style, bonus: this.bonus, penalty: this.penalty };
   }
 
   bonusChange(e) {
@@ -25,5 +29,8 @@ export class OptionsComponent {
     this.style = e.value;
   }
 
+  penaltyChange(e) {
+    this.penalty = e.value;
+  }
 
 }

@@ -19,7 +19,8 @@ export class LandingComponent {
   pregameInfo = {
     names: [],
     style: '181',
-    bonus: '5'
+    bonus: '5',
+    penalty: '5'
   };
 
   @ViewChild(NamesComponent, {static: false}) private namesComponent: NamesComponent;
@@ -45,6 +46,7 @@ export class LandingComponent {
     const options = this.optionsComponent.getOptions();
     this.pregameInfo.bonus = options.bonus;
     this.pregameInfo.style = options.style;
+    this.pregameInfo.penalty = options.penalty;
   }
   handleLogin() {
 
@@ -57,6 +59,7 @@ export class LandingComponent {
     const options = this.optionsComponent.getOptions();
     this.gameData.options = {
       bonusAmount: +options.bonus,
+      penaltyAmount: +options.penalty,
       playStyle: options.style
     };
     this.gameData.addPlayers(this.pregameInfo.names);
