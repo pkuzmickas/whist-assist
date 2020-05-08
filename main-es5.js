@@ -91,7 +91,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
     /* harmony default export */
 
 
-    __webpack_exports__["default"] = "<app-navbar [title]='gameData.currentStage === GameStages.GAME_OVER ? \"GAME OVER\" : undefined' [roundNumber]=\"gameData.roundOf\" [roundNumber2]='gameData.roundOf===1 || gameData.roundOf===8 ? gameData.completedRoundsInRound+1 : undefined'></app-navbar>\n<div class=\"container\">\n  <div [ngSwitch]=\"gameData.currentStage\">\n    <div *ngSwitchCase=\"GameStages.FINAL_STAGE\">\n      <app-leaderboard></app-leaderboard>\n      <div *ngIf=\"gameData.currentStage === GameStages.FINAL_STAGE\" class='buttoncont'>\n        <button (click)='gameData.nextRound()' class=\"continue\" mat-raised-button color=\"accent\">CONTINUE</button>\n      </div>\n    </div>\n    <div *ngSwitchCase=\"GameStages.GAME_OVER\">\n      <app-leaderboard title='FINAL SCORES'></app-leaderboard>\n      <div *ngIf=\"gameData.currentStage === GameStages.GAME_OVER\" class='buttoncont'>\n        <button (click)='newGame()' class=\"continue\" mat-raised-button color=\"accent\">NEW GAME</button>\n      </div>\n    </div>\n    <div *ngSwitchDefault>\n      <app-guesses></app-guesses>\n      <app-action></app-action>\n      <app-key-grid (clicked)='keyClicked($event)'></app-key-grid>\n    </div>\n  </div>\n</div>\n";
+    __webpack_exports__["default"] = "<app-navbar [title]='gameData.currentStage === GameStages.GAME_OVER ? \"GAME OVER\" : undefined' [roundNumber]=\"gameData.roundOf\" [roundNumber2]='getRoundNumber2()'></app-navbar>\n<div class=\"container\">\n  <div [ngSwitch]=\"gameData.currentStage\">\n    <div *ngSwitchCase=\"GameStages.ROUND_RESULT_STAGE\">\n      <app-round-end></app-round-end>\n      <div class='buttoncont pt-4 pb-4'>\n        <button (click)='previousStage()' class=\"continue\" mat-raised-button color=\"accent\">BACK</button>\n        <button [disabled]='!isRoundValid()' (click)='nextStage()' class=\"continue\" mat-raised-button color=\"accent\">CONTINUE</button>\n      </div>\n    </div>\n    <div *ngSwitchCase=\"GameStages.FINAL_STAGE\">\n      <app-leaderboard></app-leaderboard>\n      <div *ngIf=\"gameData.currentStage === GameStages.FINAL_STAGE\" class='buttoncont pt-4 container'>\n        <button (click)='gameData.nextRound()' class=\"continue\" mat-raised-button color=\"accent\">CONTINUE</button>\n      </div>\n    </div>\n    <div *ngSwitchCase=\"GameStages.GAME_OVER\">\n      <app-leaderboard title='FINAL SCORES'></app-leaderboard>\n      <div *ngIf=\"gameData.currentStage === GameStages.GAME_OVER\" class='buttoncont'>\n        <button (click)='newGame()' class=\"continue\" mat-raised-button color=\"accent\">NEW GAME</button>\n      </div>\n    </div>\n    <div *ngSwitchDefault>\n      <app-guesses></app-guesses>\n      <app-action (cardChanged)='invalidGuessKeyHandler()'></app-action>\n      <app-key-grid [disabledGuess]='invalidGuessKey' (clicked)='keyClicked($event)'></app-key-grid>\n    </div>\n  </div>\n</div>\n";
     /***/
   },
 
@@ -131,7 +131,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
     /* harmony default export */
 
 
-    __webpack_exports__["default"] = "<mat-card class=\"grid\">\n    <div *ngFor=\"let btn of buttons; index as i\" class=\"row\">\n      <div *ngFor=\"let rowbtn of buttons; index as j\" class=\"col\">\n        <button [disabled]='i*3+j>gameData.roundOf' (click)='clicked.emit(i*3+j)' class=\"key-button\" mat-stroked-button>{{i*3+j}}</button>\n      </div>\n    </div>\n</mat-card>\n";
+    __webpack_exports__["default"] = "<mat-card class=\"grid\">\n    <div *ngFor=\"let btn of buttons; index as i\" class=\"row\">\n      <div *ngFor=\"let rowbtn of buttons; index as j\" class=\"col\">\n        <button [disabled]='i*3+j>gameData.roundOf || disabledGuess === i*3+j' (click)='clicked.emit(i*3+j)' class=\"key-button\" mat-stroked-button>{{i*3+j}}</button>\n      </div>\n    </div>\n</mat-card>\n";
     /***/
   },
 
@@ -151,7 +151,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
     /* harmony default export */
 
 
-    __webpack_exports__["default"] = "<div class=\"container\">\n  <div class=\"row\">\n    <div class=\"col text-center\">\n      <mat-card>\n        <span class=\"title\">{{title}}</span>\n      </mat-card>\n    </div>\n  </div>\n  <div class=\"row\">\n    <div class=\"col\">\n      <app-score-card\n        primary\n        size=\"1.3em\"\n        rank=\"1\"\n        [name]=\"totalLeaderboard[0].name\"\n        [score]=\"totalLeaderboard[0].score\"\n      ></app-score-card>\n    </div>\n  </div>\n  <div class=\"row\">\n    <div class=\"col\">\n      <app-score-card\n        rank=\"2\"\n        [name]=\"totalLeaderboard[1].name\"\n        [score]=\"totalLeaderboard[1].score\"\n      ></app-score-card>\n    </div>\n    <div class=\"col\">\n      <app-score-card\n        rank=\"3\"\n        [name]=\"totalLeaderboard[2].name\"\n        [score]=\"totalLeaderboard[2].score\"\n      ></app-score-card>\n    </div>\n  </div>\n  <div class=\"row\">\n    <div class=\"col noob\" *ngFor=\"let noob of subLeaderboard; index as i\">\n      <app-score-card\n        size=\"0.7em\"\n        rank=\"{{ i + 4 }}\"\n        [name]=\"noob.name\"\n        [score]=\"noob.score\"\n      ></app-score-card>\n    </div>\n  </div>\n</div>\n";
+    __webpack_exports__["default"] = "<div class=\"container\">\n  <div class=\"row\">\n    <div class=\"col text-center\">\n      <mat-card>\n        <span class=\"title\">{{title}}</span>\n      </mat-card>\n    </div>\n  </div>\n  <div class=\"row\">\n    <div class=\"col\">\n      <app-score-card\n        primary\n        size=\"1.3em\"\n        rank=\"1\"\n        [name]=\"leader.name\"\n        [score]=\"leader.score\"\n      ></app-score-card>\n    </div>\n  </div>\n  <div class=\"row\">\n    <div class=\"col\" *ngFor=\"let noob of subLeaderboard; index as i\">\n      <app-score-card\n        rank=\"{{ i + 2 }}\"\n        [name]=\"noob.name\"\n        [score]=\"noob.score\"\n      ></app-score-card>\n    </div>\n  </div>\n</div>\n";
     /***/
   },
 
@@ -172,6 +172,46 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 
     __webpack_exports__["default"] = "<mat-toolbar color=\"primary\" class=\"nav-container\">\n  <div class=\"navigation\">\n    <button mat-mini-fab aria-label=\"menu\">\n      <mat-icon>menu</mat-icon>\n    </button>\n  </div>\n  <span class=\"round\">{{getTitle()}}</span>\n  <span class=\"rightside\"></span>\n</mat-toolbar>\n";
+    /***/
+  },
+
+  /***/
+  "./node_modules/raw-loader/dist/cjs.js!./src/app/game/round-card/round-card.component.html":
+  /*!*************************************************************************************************!*\
+    !*** ./node_modules/raw-loader/dist/cjs.js!./src/app/game/round-card/round-card.component.html ***!
+    \*************************************************************************************************/
+
+  /*! exports provided: default */
+
+  /***/
+  function node_modulesRawLoaderDistCjsJsSrcAppGameRoundCardRoundCardComponentHtml(module, __webpack_exports__, __webpack_require__) {
+    "use strict";
+
+    __webpack_require__.r(__webpack_exports__);
+    /* harmony default export */
+
+
+    __webpack_exports__["default"] = "<mat-card>\n  <div class=\"row\">\n    <div class=\"col text-center\">\n      <span class=\"name\">{{playerName}}</span>\n    </div>\n  </div>\n  <div class=\"row\">\n    <table mat-table [dataSource]=\"dataSource\">\n      <ng-container matColumnDef=\"predicted\">\n        <th mat-header-cell *matHeaderCellDef>Predicted</th>\n        <td mat-cell *matCellDef=\"let element\">{{ element.predicted }}</td>\n      </ng-container>\n\n      <ng-container matColumnDef=\"got\">\n        <th mat-header-cell *matHeaderCellDef>Got</th>\n        <td mat-cell *matCellDef=\"let element\">{{ element.got }}</td>\n      </ng-container>\n\n      <ng-container matColumnDef=\"score\">\n        <th mat-header-cell *matHeaderCellDef>Score</th>\n        <td mat-cell *matCellDef=\"let element\">{{ element.score }} ({{element.diff}})</td>\n      </ng-container>\n\n      <ng-container matColumnDef=\"correctCount\">\n        <th mat-header-cell *matHeaderCellDef>Correct Count</th>\n        <td mat-cell *matCellDef=\"let element\">{{ element.correctCount }}</td>\n      </ng-container>\n\n      <tr mat-header-row *matHeaderRowDef=\"columns\"></tr>\n      <tr mat-row *matRowDef=\"let row; columns: columns\"></tr>\n    </table>\n  </div>\n\n</mat-card>\n";
+    /***/
+  },
+
+  /***/
+  "./node_modules/raw-loader/dist/cjs.js!./src/app/game/round-end/round-end.component.html":
+  /*!***********************************************************************************************!*\
+    !*** ./node_modules/raw-loader/dist/cjs.js!./src/app/game/round-end/round-end.component.html ***!
+    \***********************************************************************************************/
+
+  /*! exports provided: default */
+
+  /***/
+  function node_modulesRawLoaderDistCjsJsSrcAppGameRoundEndRoundEndComponentHtml(module, __webpack_exports__, __webpack_require__) {
+    "use strict";
+
+    __webpack_require__.r(__webpack_exports__);
+    /* harmony default export */
+
+
+    __webpack_exports__["default"] = "<div class=\"container\">\n  <div class=\"row\">\n    <div class=\"col text-center\">\n      <mat-card>\n        <span class=\"title\">Round Results</span>\n      </mat-card>\n    </div>\n  </div>\n  <div *ngIf=\"invalid\" class=\"row\">\n    <div class=\"col\">\n      <mat-card class=\"error-card\">\n        <span>Incorrect scores, someone lied!<br>Find the pizma.</span\n        >\n      </mat-card>\n    </div>\n  </div>\n  <div class=\"row\" *ngFor=\"let result of roundResults\">\n    <div class=\"col\">\n      <app-round-card\n        [playerName]=\"result.name\"\n        [predicted]=\"result.predicted\"\n        [got]=\"result.got\"\n        [score]=\"result.score\"\n        [diff]=\"result.diff\"\n        [correctCount]=\"result.correctCount\"\n      ></app-round-card>\n    </div>\n  </div>\n</div>\n";
     /***/
   },
 
@@ -231,7 +271,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
     /* harmony default export */
 
 
-    __webpack_exports__["default"] = "<app-top [text]=\"getTopTitle()\"></app-top>\n<div class=\"background\">\n  <div class=\"container\">\n    <div class=\"top-padding\"></div>\n    <div [ngSwitch]=\"currentStage\">\n      <app-names\n        *ngSwitchCase=\"LandingStage.NAME_STAGE\"\n        (isValid)=\"onValidityChange($event)\"\n        [namesList]=\"pregameInfo.names\"\n      ></app-names>\n      <app-options [style]='pregameInfo.style' [bonus]='pregameInfo.bonus' *ngSwitchCase=\"LandingStage.OPTIONS_STAGE\"></app-options>\n    </div>\n    <div class=\"bottom-padding\"></div>\n  </div>\n</div>\n<app-bottom\n  (back)=\"handleBack()\"\n  (login)=\"handleLogin()\"\n  (continue)=\"handleContinue()\"\n  (startGame)=\"handleStart()\"\n  [stage]=\"currentStage\"\n  [stageValid]=\"isStageValid\"\n></app-bottom>\n";
+    __webpack_exports__["default"] = "<app-top [text]=\"getTopTitle()\"></app-top>\n<div class=\"background\">\n  <div class=\"container\">\n    <div class=\"top-padding\"></div>\n    <div [ngSwitch]=\"currentStage\">\n      <app-names\n        *ngSwitchCase=\"LandingStage.NAME_STAGE\"\n        (isValid)=\"onValidityChange($event)\"\n        [namesList]=\"pregameInfo.names\"\n      ></app-names>\n      <app-options [style]='pregameInfo.style' [bonus]='pregameInfo.bonus' [penalty]='pregameInfo.penalty' *ngSwitchCase=\"LandingStage.OPTIONS_STAGE\"></app-options>\n    </div>\n    <div class=\"bottom-padding\"></div>\n  </div>\n</div>\n<app-bottom\n  (back)=\"handleBack()\"\n  (login)=\"handleLogin()\"\n  (continue)=\"handleContinue()\"\n  (startGame)=\"handleStart()\"\n  [stage]=\"currentStage\"\n  [stageValid]=\"isStageValid\"\n></app-bottom>\n";
     /***/
   },
 
@@ -256,6 +296,26 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
   },
 
   /***/
+  "./node_modules/raw-loader/dist/cjs.js!./src/app/landing/options/options-option/options-option.component.html":
+  /*!********************************************************************************************************************!*\
+    !*** ./node_modules/raw-loader/dist/cjs.js!./src/app/landing/options/options-option/options-option.component.html ***!
+    \********************************************************************************************************************/
+
+  /*! exports provided: default */
+
+  /***/
+  function node_modulesRawLoaderDistCjsJsSrcAppLandingOptionsOptionsOptionOptionsOptionComponentHtml(module, __webpack_exports__, __webpack_require__) {
+    "use strict";
+
+    __webpack_require__.r(__webpack_exports__);
+    /* harmony default export */
+
+
+    __webpack_exports__["default"] = "<mat-card>\n  <div class=\"row\">\n    <p class=\"options-group\">\n      <span class=\"option-title\">{{name}}</span>\n      <mat-button-toggle-group\n        class=\"option-buttons\"\n        name=\"fontStyle\"\n        aria-label=\"Font Style\"\n        (change)='change($event)'\n      >\n      <mat-button-toggle *ngFor=\"let toggle of toggles\" checked=\"{{curVal===toggle}}\" value=\"{{toggle}}\">{{toggle}}</mat-button-toggle>\n      </mat-button-toggle-group>\n    </p>\n  </div>\n</mat-card>\n";
+    /***/
+  },
+
+  /***/
   "./node_modules/raw-loader/dist/cjs.js!./src/app/landing/options/options.component.html":
   /*!**********************************************************************************************!*\
     !*** ./node_modules/raw-loader/dist/cjs.js!./src/app/landing/options/options.component.html ***!
@@ -271,7 +331,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
     /* harmony default export */
 
 
-    __webpack_exports__["default"] = "<mat-card>\n  <div class=\"row\">\n    <p class=\"options-group\">\n      <span class=\"option-title\">Bonus Points:</span>\n      <mat-button-toggle-group\n        class=\"option-buttons\"\n        name=\"fontStyle\"\n        aria-label=\"Font Style\"\n        (change)='bonusChange($event)'\n      >\n        <mat-button-toggle checked=\"{{bonus==='5'}}\" value=\"5\">5</mat-button-toggle>\n        <mat-button-toggle checked=\"{{bonus==='10'}}\" value=\"10\">10</mat-button-toggle>\n      </mat-button-toggle-group>\n    </p>\n  </div>\n</mat-card>\n<mat-card>\n  <div class=\"row\">\n    <p class=\"options-group\">\n      <span class=\"option-title\">Play Style:</span>\n      <mat-button-toggle-group\n        class=\"option-buttons\"\n        name=\"fontStyle\"\n        aria-label=\"Font Style\"\n        (change)='styleChange($event)'\n      >\n        <mat-button-toggle checked=\"{{style==='181'}}\" value=\"181\">1-8-1</mat-button-toggle>\n        <mat-button-toggle checked=\"{{style==='818'}}\" value=\"818\">8-1-8</mat-button-toggle>\n      </mat-button-toggle-group>\n    </p>\n  </div>\n</mat-card>\n";
+    __webpack_exports__["default"] = "<app-options-option (toggleChange)='bonusChange($event)' name='Bonus Points' [curVal]='bonus' [toggles]=\"bonusOptions\"></app-options-option>\n<app-options-option (toggleChange)='penaltyChange($event)' name='Penalty Points' [curVal]='penalty' [toggles]=\"penaltyOptions\"></app-options-option>\n<app-options-option (toggleChange)='styleChange($event)' name='Play Style' [curVal]='style' [toggles]=\"styleOptions\"></app-options-option>\n";
     /***/
   },
 
@@ -884,8 +944,9 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
     (function (GameStages) {
       GameStages[GameStages["GUESS_STAGE"] = 0] = "GUESS_STAGE";
       GameStages[GameStages["GOT_STAGE"] = 1] = "GOT_STAGE";
-      GameStages[GameStages["FINAL_STAGE"] = 2] = "FINAL_STAGE";
-      GameStages[GameStages["GAME_OVER"] = 3] = "GAME_OVER";
+      GameStages[GameStages["ROUND_RESULT_STAGE"] = 2] = "ROUND_RESULT_STAGE";
+      GameStages[GameStages["FINAL_STAGE"] = 3] = "FINAL_STAGE";
+      GameStages[GameStages["GAME_OVER"] = 4] = "GAME_OVER";
     })(GameStages || (GameStages = {}));
     /***/
 
@@ -1241,13 +1302,31 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
     var _highlight_directive__WEBPACK_IMPORTED_MODULE_31__ = __webpack_require__(
     /*! ./highlight.directive */
     "./src/app/highlight.directive.ts");
+    /* harmony import */
+
+
+    var _landing_options_options_option_options_option_component__WEBPACK_IMPORTED_MODULE_32__ = __webpack_require__(
+    /*! ./landing/options/options-option/options-option.component */
+    "./src/app/landing/options/options-option/options-option.component.ts");
+    /* harmony import */
+
+
+    var _game_round_end_round_end_component__WEBPACK_IMPORTED_MODULE_33__ = __webpack_require__(
+    /*! ./game/round-end/round-end.component */
+    "./src/app/game/round-end/round-end.component.ts");
+    /* harmony import */
+
+
+    var _game_round_card_round_card_component__WEBPACK_IMPORTED_MODULE_34__ = __webpack_require__(
+    /*! ./game/round-card/round-card.component */
+    "./src/app/game/round-card/round-card.component.ts");
 
     var AppModule = function AppModule() {
       _classCallCheck(this, AppModule);
     };
 
     AppModule = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([Object(_angular_core__WEBPACK_IMPORTED_MODULE_2__["NgModule"])({
-      declarations: [_app_component__WEBPACK_IMPORTED_MODULE_5__["AppComponent"], _landing_landing_component__WEBPACK_IMPORTED_MODULE_8__["LandingComponent"], _landing_top_top_component__WEBPACK_IMPORTED_MODULE_20__["TopComponent"], _landing_bottom_bottom_component__WEBPACK_IMPORTED_MODULE_21__["BottomComponent"], _landing_names_names_component__WEBPACK_IMPORTED_MODULE_22__["NamesComponent"], _landing_options_options_component__WEBPACK_IMPORTED_MODULE_23__["OptionsComponent"], _game_game_component__WEBPACK_IMPORTED_MODULE_24__["GameComponent"], _game_navbar_navbar_component__WEBPACK_IMPORTED_MODULE_25__["NavbarComponent"], _game_guesses_guesses_component__WEBPACK_IMPORTED_MODULE_26__["GuessesComponent"], _game_action_action_component__WEBPACK_IMPORTED_MODULE_27__["ActionComponent"], _game_key_grid_key_grid_component__WEBPACK_IMPORTED_MODULE_28__["KeyGridComponent"], _game_leaderboard_leaderboard_component__WEBPACK_IMPORTED_MODULE_29__["LeaderboardComponent"], _game_score_card_score_card_component__WEBPACK_IMPORTED_MODULE_30__["ScoreCardComponent"], _highlight_directive__WEBPACK_IMPORTED_MODULE_31__["HighlightDirective"]],
+      declarations: [_app_component__WEBPACK_IMPORTED_MODULE_5__["AppComponent"], _landing_landing_component__WEBPACK_IMPORTED_MODULE_8__["LandingComponent"], _landing_top_top_component__WEBPACK_IMPORTED_MODULE_20__["TopComponent"], _landing_bottom_bottom_component__WEBPACK_IMPORTED_MODULE_21__["BottomComponent"], _landing_names_names_component__WEBPACK_IMPORTED_MODULE_22__["NamesComponent"], _landing_options_options_component__WEBPACK_IMPORTED_MODULE_23__["OptionsComponent"], _game_game_component__WEBPACK_IMPORTED_MODULE_24__["GameComponent"], _game_navbar_navbar_component__WEBPACK_IMPORTED_MODULE_25__["NavbarComponent"], _game_guesses_guesses_component__WEBPACK_IMPORTED_MODULE_26__["GuessesComponent"], _game_action_action_component__WEBPACK_IMPORTED_MODULE_27__["ActionComponent"], _game_key_grid_key_grid_component__WEBPACK_IMPORTED_MODULE_28__["KeyGridComponent"], _game_leaderboard_leaderboard_component__WEBPACK_IMPORTED_MODULE_29__["LeaderboardComponent"], _game_score_card_score_card_component__WEBPACK_IMPORTED_MODULE_30__["ScoreCardComponent"], _highlight_directive__WEBPACK_IMPORTED_MODULE_31__["HighlightDirective"], _landing_options_options_option_options_option_component__WEBPACK_IMPORTED_MODULE_32__["OptionsOptionComponent"], _game_round_end_round_end_component__WEBPACK_IMPORTED_MODULE_33__["RoundEndComponent"], _game_round_card_round_card_component__WEBPACK_IMPORTED_MODULE_34__["RoundCardComponent"]],
       imports: [_angular_platform_browser__WEBPACK_IMPORTED_MODULE_1__["BrowserModule"], _app_routing_module__WEBPACK_IMPORTED_MODULE_4__["AppRoutingModule"], _angular_service_worker__WEBPACK_IMPORTED_MODULE_6__["ServiceWorkerModule"].register('ngsw-worker.js', {
         enabled: _environments_environment__WEBPACK_IMPORTED_MODULE_7__["environment"].production
       }), _angular_platform_browser_animations__WEBPACK_IMPORTED_MODULE_9__["BrowserAnimationsModule"], _angular_material_input__WEBPACK_IMPORTED_MODULE_13__["MatInputModule"], _angular_material_form_field__WEBPACK_IMPORTED_MODULE_10__["MatFormFieldModule"], _angular_material_select__WEBPACK_IMPORTED_MODULE_11__["MatSelectModule"], _angular_material_slider__WEBPACK_IMPORTED_MODULE_12__["MatSliderModule"], _angular_material_button__WEBPACK_IMPORTED_MODULE_14__["MatButtonModule"], _angular_forms__WEBPACK_IMPORTED_MODULE_3__["FormsModule"], _angular_forms__WEBPACK_IMPORTED_MODULE_3__["ReactiveFormsModule"], _angular_material_button_toggle__WEBPACK_IMPORTED_MODULE_15__["MatButtonToggleModule"], _angular_material_card__WEBPACK_IMPORTED_MODULE_16__["MatCardModule"], _angular_material_toolbar__WEBPACK_IMPORTED_MODULE_18__["MatToolbarModule"], _angular_material_icon__WEBPACK_IMPORTED_MODULE_17__["MatIconModule"], _angular_material_table__WEBPACK_IMPORTED_MODULE_19__["MatTableModule"]],
@@ -1307,9 +1386,10 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         this.players = new Map();
         this.roundPredictions = new Map();
         this.roundGots = new Map();
+        this.roundPoints = new Map();
         this.playerNames = [];
         this.currentStage = _GameStages__WEBPACK_IMPORTED_MODULE_2__["GameStages"].GUESS_STAGE;
-        this.completedRoundsInRound = 0;
+        this.completedRoundsInRoundOf = 0;
         this.loopDone = false;
       }
 
@@ -1348,7 +1428,8 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       }, {
         key: "initGame",
         value: function initGame() {
-          this.currentPlayerId = 0;
+          this.startingPlayerId = 0;
+          this.currentPlayerId = this.startingPlayerId;
 
           if (this.options.playStyle === '818') {
             this.roundOf = 8;
@@ -1368,11 +1449,18 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
             this.currentStage++;
 
             if (this.currentStage === _GameStages__WEBPACK_IMPORTED_MODULE_2__["GameStages"].FINAL_STAGE) {
-              if (this.options.playStyle === '181' && this.roundOf === 1 && this.completedRoundsInRound === this.players.size - 1 && this.loopDone || this.options.playStyle === '818' && this.roundOf === 8 && this.completedRoundsInRound === this.players.size - 1 && this.loopDone) {
+              // tslint:disable-next-line:max-line-length
+              if (this.options.playStyle === '181' && this.roundOf === 1 && this.completedRoundsInRoundOf === this.players.size - 1 && this.loopDone || // tslint:disable-next-line:max-line-length
+              this.options.playStyle === '818' && this.roundOf === 8 && this.completedRoundsInRoundOf === this.players.size - 1 && this.loopDone) {
                 this.currentStage = _GameStages__WEBPACK_IMPORTED_MODULE_2__["GameStages"].GAME_OVER;
               }
             }
           }
+        }
+      }, {
+        key: "setToLastPlayer",
+        value: function setToLastPlayer() {
+          this.currentPlayerId = this.playerNames.length - 1;
         }
       }, {
         key: "addGuess",
@@ -1423,6 +1511,11 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
           }
         }
       }, {
+        key: "isOnLastStepOfStage",
+        value: function isOnLastStepOfStage() {
+          return this.currentPlayerId === this.playerNames.length - 1;
+        }
+      }, {
         key: "isOnNewestStep",
         value: function isOnNewestStep() {
           var stepsTaken = this.roundPredictions.size + this.roundGots.size;
@@ -1452,6 +1545,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
             roundPoints -= Math.abs(got - predicted);
           }
 
+          this.roundPoints.set(playerName, roundPoints);
           return roundPoints;
         }
       }, {
@@ -1476,7 +1570,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
           var _iteratorError2 = undefined;
 
           try {
-            for (var _iterator2 = this.players.keys()[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+            for (var _iterator2 = this.playerNames[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
               var playerName = _step2.value;
               leaderboard.push({
                 score: this.players.get(playerName).totalScore,
@@ -1511,7 +1605,16 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
           this.playerNames = [];
           this.roundOf = 1;
           this.loopDone = false;
-          this.completedRoundsInRound = 0;
+          this.completedRoundsInRoundOf = 0;
+        }
+      }, {
+        key: "resortArray",
+        value: function resortArray() {
+          for (var i = 0; i < this.playerNames.length - 1; i++) {
+            var temp = this.playerNames[i];
+            this.playerNames[i] = this.playerNames[i + 1];
+            this.playerNames[i + 1] = temp;
+          }
         }
       }, {
         key: "nextRound",
@@ -1519,16 +1622,18 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
           this.currentStage = _GameStages__WEBPACK_IMPORTED_MODULE_2__["GameStages"].GUESS_STAGE;
           this.roundGots.clear();
           this.roundPredictions.clear();
-          this.currentPlayerId = 0;
+          this.resortArray(); // this.startingPlayerId = (this.startingPlayerId + 1) % this.playerNames.length;
+
+          this.currentPlayerId = this.startingPlayerId;
           var addingRound = true;
 
           if (this.roundOf === 1 || this.roundOf === 8) {
-            this.completedRoundsInRound++;
+            this.completedRoundsInRoundOf++;
             addingRound = false;
 
-            if (this.completedRoundsInRound === this.players.size) {
+            if (this.completedRoundsInRoundOf === this.players.size) {
               addingRound = true;
-              this.completedRoundsInRound = 0;
+              this.completedRoundsInRoundOf = 0;
 
               if (this.roundOf === 1) {
                 this.goingUp = true;
@@ -1546,15 +1651,75 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
             }
           }
 
-          console.log(this.roundOf);
-          console.log(addingRound);
-          console.log(this.goingUp);
-
           if (addingRound) {
             this.goingUp ? this.roundOf++ : this.roundOf--;
           }
+        }
+      }, {
+        key: "getNotViableGuess",
+        value: function getNotViableGuess() {
+          var guessSum = 0;
+          var _iteratorNormalCompletion3 = true;
+          var _didIteratorError3 = false;
+          var _iteratorError3 = undefined;
 
-          console.log(this.roundOf);
+          try {
+            for (var _iterator3 = this.roundPredictions.values()[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
+              var guess = _step3.value;
+              guessSum += guess;
+            }
+          } catch (err) {
+            _didIteratorError3 = true;
+            _iteratorError3 = err;
+          } finally {
+            try {
+              if (!_iteratorNormalCompletion3 && _iterator3.return != null) {
+                _iterator3.return();
+              }
+            } finally {
+              if (_didIteratorError3) {
+                throw _iteratorError3;
+              }
+            }
+          }
+
+          var diff = this.roundOf - guessSum;
+
+          if (diff >= 0) {
+            return diff;
+          }
+
+          return undefined;
+        }
+      }, {
+        key: "checkRoundValidity",
+        value: function checkRoundValidity() {
+          var sum = 0;
+          var _iteratorNormalCompletion4 = true;
+          var _didIteratorError4 = false;
+          var _iteratorError4 = undefined;
+
+          try {
+            for (var _iterator4 = this.roundGots.values()[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
+              var got = _step4.value;
+              sum += got;
+            }
+          } catch (err) {
+            _didIteratorError4 = true;
+            _iteratorError4 = err;
+          } finally {
+            try {
+              if (!_iteratorNormalCompletion4 && _iterator4.return != null) {
+                _iterator4.return();
+              }
+            } finally {
+              if (_didIteratorError4) {
+                throw _iteratorError4;
+              }
+            }
+          }
+
+          return sum === this.roundOf;
         }
       }]);
 
@@ -1654,6 +1819,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         this.dataSource = new _angular_material_table__WEBPACK_IMPORTED_MODULE_2__["MatTableDataSource"](this.tableData);
         this.leftEnabled = false;
         this.rightEnabled = true;
+        this.cardChanged = new _angular_core__WEBPACK_IMPORTED_MODULE_1__["EventEmitter"]();
       }
 
       _createClass(ActionComponent, [{
@@ -1706,6 +1872,8 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
             this.gameData.previousPlayer();
             this.updateCard();
           }
+
+          this.cardChanged.emit();
         }
       }, {
         key: "nextCard",
@@ -1714,6 +1882,8 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
             this.gameData.nextPlayer();
             this.updateCard();
           }
+
+          this.cardChanged.emit();
         }
       }]);
 
@@ -1726,6 +1896,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       }];
     };
 
+    tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Output"])()], ActionComponent.prototype, "cardChanged", void 0);
     ActionComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
       selector: 'app-action',
       template: tslib__WEBPACK_IMPORTED_MODULE_0__["__importDefault"](__webpack_require__(
@@ -1754,7 +1925,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
     /* harmony default export */
 
 
-    __webpack_exports__["default"] = ".container {\n  padding-top: 10px;\n}\napp-action {\n  padding-top: 20px;\n}\n.top-padding {\n  padding-top: 20px;\n  margin-top: 20px;\n}\n.continue {\n  -webkit-box-flex:1;\n          flex:1;\n  margin-top: 10vh;\n  margin-bottom: 10vh;\n}\n.buttoncont {\n  display: -webkit-box;\n  display: flex;\n}\n\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInNyYy9hcHAvZ2FtZS9nYW1lLmNvbXBvbmVudC5jc3MiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUE7RUFDRSxpQkFBaUI7QUFDbkI7QUFDQTtFQUNFLGlCQUFpQjtBQUNuQjtBQUNBO0VBQ0UsaUJBQWlCO0VBQ2pCLGdCQUFnQjtBQUNsQjtBQUNBO0VBQ0Usa0JBQU07VUFBTixNQUFNO0VBQ04sZ0JBQWdCO0VBQ2hCLG1CQUFtQjtBQUNyQjtBQUNBO0VBQ0Usb0JBQWE7RUFBYixhQUFhO0FBQ2YiLCJmaWxlIjoic3JjL2FwcC9nYW1lL2dhbWUuY29tcG9uZW50LmNzcyIsInNvdXJjZXNDb250ZW50IjpbIi5jb250YWluZXIge1xuICBwYWRkaW5nLXRvcDogMTBweDtcbn1cbmFwcC1hY3Rpb24ge1xuICBwYWRkaW5nLXRvcDogMjBweDtcbn1cbi50b3AtcGFkZGluZyB7XG4gIHBhZGRpbmctdG9wOiAyMHB4O1xuICBtYXJnaW4tdG9wOiAyMHB4O1xufVxuLmNvbnRpbnVlIHtcbiAgZmxleDoxO1xuICBtYXJnaW4tdG9wOiAxMHZoO1xuICBtYXJnaW4tYm90dG9tOiAxMHZoO1xufVxuLmJ1dHRvbmNvbnQge1xuICBkaXNwbGF5OiBmbGV4O1xufVxuIl19 */";
+    __webpack_exports__["default"] = ".container {\n  padding-top: 10px;\n}\napp-action {\n  padding-top: 20px;\n}\n.top-padding {\n  padding-top: 20px;\n  margin-top: 20px;\n}\n.continue {\n  -webkit-box-flex:1;\n          flex:1;\n  margin-left:10px;\n  margin-right: 10px;\n}\n.full {\n  width: 100%;\n}\n.buttoncont {\n  display: -webkit-box;\n  display: flex;\n}\n\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInNyYy9hcHAvZ2FtZS9nYW1lLmNvbXBvbmVudC5jc3MiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUE7RUFDRSxpQkFBaUI7QUFDbkI7QUFDQTtFQUNFLGlCQUFpQjtBQUNuQjtBQUNBO0VBQ0UsaUJBQWlCO0VBQ2pCLGdCQUFnQjtBQUNsQjtBQUNBO0VBQ0Usa0JBQU07VUFBTixNQUFNO0VBQ04sZ0JBQWdCO0VBQ2hCLGtCQUFrQjtBQUNwQjtBQUNBO0VBQ0UsV0FBVztBQUNiO0FBQ0E7RUFDRSxvQkFBYTtFQUFiLGFBQWE7QUFDZiIsImZpbGUiOiJzcmMvYXBwL2dhbWUvZ2FtZS5jb21wb25lbnQuY3NzIiwic291cmNlc0NvbnRlbnQiOlsiLmNvbnRhaW5lciB7XG4gIHBhZGRpbmctdG9wOiAxMHB4O1xufVxuYXBwLWFjdGlvbiB7XG4gIHBhZGRpbmctdG9wOiAyMHB4O1xufVxuLnRvcC1wYWRkaW5nIHtcbiAgcGFkZGluZy10b3A6IDIwcHg7XG4gIG1hcmdpbi10b3A6IDIwcHg7XG59XG4uY29udGludWUge1xuICBmbGV4OjE7XG4gIG1hcmdpbi1sZWZ0OjEwcHg7XG4gIG1hcmdpbi1yaWdodDogMTBweDtcbn1cbi5mdWxsIHtcbiAgd2lkdGg6IDEwMCU7XG59XG4uYnV0dG9uY29udCB7XG4gIGRpc3BsYXk6IGZsZXg7XG59XG4iXX0= */";
     /***/
   },
 
@@ -1872,6 +2043,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
             case _GameStages__WEBPACK_IMPORTED_MODULE_5__["GameStages"].GUESS_STAGE:
               this.gameData.addGuess(key);
               this.updateCardsWithGuess();
+              this.invalidGuessKeyHandler();
               break;
 
             case _GameStages__WEBPACK_IMPORTED_MODULE_5__["GameStages"].GOT_STAGE:
@@ -1879,6 +2051,42 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
               this.updateCardsWithGot();
               break;
           }
+        }
+      }, {
+        key: "invalidGuessKeyHandler",
+        value: function invalidGuessKeyHandler() {
+          if (this.gameData.isOnLastStepOfStage()) {
+            this.invalidGuessKey = this.gameData.getNotViableGuess();
+          } else {
+            this.invalidGuessKey = undefined;
+          }
+
+          console.log('last step? ', this.gameData.isOnLastStepOfStage());
+        }
+      }, {
+        key: "isRoundValid",
+        value: function isRoundValid() {
+          return this.gameData.checkRoundValidity();
+        }
+      }, {
+        key: "previousStage",
+        value: function previousStage() {
+          if (this.gameData.currentStage !== 0) {
+            this.gameData.setToLastPlayer();
+            this.gameData.currentStage--;
+          }
+        }
+      }, {
+        key: "nextStage",
+        value: function nextStage() {
+          if (this.gameData.currentStage !== _GameStages__WEBPACK_IMPORTED_MODULE_5__["GameStages"].FINAL_STAGE) {
+            this.gameData.currentStage++;
+          }
+        }
+      }, {
+        key: "getRoundNumber2",
+        value: function getRoundNumber2() {
+          return this.gameData.roundOf === 1 || this.gameData.roundOf === 8 ? this.gameData.completedRoundsInRoundOf + 1 : undefined;
         }
       }]);
 
@@ -2003,29 +2211,29 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         key: "updatePredictions",
         value: function updatePredictions() {
           this.roundInformation = [];
-          var _iteratorNormalCompletion3 = true;
-          var _didIteratorError3 = false;
-          var _iteratorError3 = undefined;
+          var _iteratorNormalCompletion5 = true;
+          var _didIteratorError5 = false;
+          var _iteratorError5 = undefined;
 
           try {
-            for (var _iterator3 = this.gameData.roundPredictions.keys()[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
-              var playerName = _step3.value;
+            for (var _iterator5 = this.gameData.roundPredictions.keys()[Symbol.iterator](), _step5; !(_iteratorNormalCompletion5 = (_step5 = _iterator5.next()).done); _iteratorNormalCompletion5 = true) {
+              var playerName = _step5.value;
               this.roundInformation.push({
                 name: playerName,
                 info: this.gameData.roundPredictions.get(playerName).toString()
               });
             }
           } catch (err) {
-            _didIteratorError3 = true;
-            _iteratorError3 = err;
+            _didIteratorError5 = true;
+            _iteratorError5 = err;
           } finally {
             try {
-              if (!_iteratorNormalCompletion3 && _iterator3.return != null) {
-                _iterator3.return();
+              if (!_iteratorNormalCompletion5 && _iterator5.return != null) {
+                _iterator5.return();
               }
             } finally {
-              if (_didIteratorError3) {
-                throw _iteratorError3;
+              if (_didIteratorError5) {
+                throw _iteratorError5;
               }
             }
           }
@@ -2034,30 +2242,32 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         key: "updateScores",
         value: function updateScores() {
           this.roundInformation = [];
-          var _iteratorNormalCompletion4 = true;
-          var _didIteratorError4 = false;
-          var _iteratorError4 = undefined;
+          var _iteratorNormalCompletion6 = true;
+          var _didIteratorError6 = false;
+          var _iteratorError6 = undefined;
 
           try {
-            for (var _iterator4 = this.gameData.roundGots.keys()[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
-              var playerName = _step4.value;
-              var info = this.gameData.roundPredictions.get(playerName).toString() + ' | ' + this.gameData.roundGots.get(playerName).toString() + ' | ' + this.gameData.players.get(playerName).totalScore.toString();
+            for (var _iterator6 = this.gameData.roundGots.keys()[Symbol.iterator](), _step6; !(_iteratorNormalCompletion6 = (_step6 = _iterator6.next()).done); _iteratorNormalCompletion6 = true) {
+              var playerName = _step6.value;
+              var points = this.gameData.roundPoints.get(playerName).toString();
+              points = +points >= 0 ? '+' + points : points;
+              var info = this.gameData.roundPredictions.get(playerName).toString() + ' | ' + this.gameData.roundGots.get(playerName).toString() + ' | ' + this.gameData.players.get(playerName).totalScore.toString() + ' (' + points + ')';
               this.roundInformation.push({
                 name: playerName,
                 info: info
               });
             }
           } catch (err) {
-            _didIteratorError4 = true;
-            _iteratorError4 = err;
+            _didIteratorError6 = true;
+            _iteratorError6 = err;
           } finally {
             try {
-              if (!_iteratorNormalCompletion4 && _iterator4.return != null) {
-                _iterator4.return();
+              if (!_iteratorNormalCompletion6 && _iterator6.return != null) {
+                _iterator6.return();
               }
             } finally {
-              if (_didIteratorError4) {
-                throw _iteratorError4;
+              if (_didIteratorError6) {
+                throw _iteratorError6;
               }
             }
           }
@@ -2168,6 +2378,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       }];
     };
 
+    tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Input"])()], KeyGridComponent.prototype, "disabledGuess", void 0);
     tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Output"])()], KeyGridComponent.prototype, "clicked", void 0);
     KeyGridComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
       selector: 'app-key-grid',
@@ -2197,7 +2408,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
     /* harmony default export */
 
 
-    __webpack_exports__["default"] = ".text-center {\n  text-align: center;\n}\n.title {\n  font-size: 1.3em;\n}\n.noob {\n  margin: 0;\n  padding: 0;\n}\n\n\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInNyYy9hcHAvZ2FtZS9sZWFkZXJib2FyZC9sZWFkZXJib2FyZC5jb21wb25lbnQuY3NzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBO0VBQ0Usa0JBQWtCO0FBQ3BCO0FBQ0E7RUFDRSxnQkFBZ0I7QUFDbEI7QUFDQTtFQUNFLFNBQVM7RUFDVCxVQUFVO0FBQ1oiLCJmaWxlIjoic3JjL2FwcC9nYW1lL2xlYWRlcmJvYXJkL2xlYWRlcmJvYXJkLmNvbXBvbmVudC5jc3MiLCJzb3VyY2VzQ29udGVudCI6WyIudGV4dC1jZW50ZXIge1xuICB0ZXh0LWFsaWduOiBjZW50ZXI7XG59XG4udGl0bGUge1xuICBmb250LXNpemU6IDEuM2VtO1xufVxuLm5vb2Ige1xuICBtYXJnaW46IDA7XG4gIHBhZGRpbmc6IDA7XG59XG5cbiJdfQ== */";
+    __webpack_exports__["default"] = ".text-center {\n  text-align: center;\n}\n.title {\n  font-size: 1.3em;\n}\n\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInNyYy9hcHAvZ2FtZS9sZWFkZXJib2FyZC9sZWFkZXJib2FyZC5jb21wb25lbnQuY3NzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBO0VBQ0Usa0JBQWtCO0FBQ3BCO0FBQ0E7RUFDRSxnQkFBZ0I7QUFDbEIiLCJmaWxlIjoic3JjL2FwcC9nYW1lL2xlYWRlcmJvYXJkL2xlYWRlcmJvYXJkLmNvbXBvbmVudC5jc3MiLCJzb3VyY2VzQ29udGVudCI6WyIudGV4dC1jZW50ZXIge1xuICB0ZXh0LWFsaWduOiBjZW50ZXI7XG59XG4udGl0bGUge1xuICBmb250LXNpemU6IDEuM2VtO1xufVxuIl19 */";
     /***/
   },
 
@@ -2259,8 +2470,9 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       _createClass(LeaderboardComponent, [{
         key: "ngOnInit",
         value: function ngOnInit() {
-          this.totalLeaderboard = this.gameData.getLeaderboard();
-          this.subLeaderboard = this.totalLeaderboard.slice(3);
+          var leaderboard = this.gameData.getLeaderboard();
+          this.subLeaderboard = leaderboard.slice(1);
+          this.leader = leaderboard[0];
         }
       }]);
 
@@ -2381,6 +2593,242 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
   },
 
   /***/
+  "./src/app/game/round-card/round-card.component.css":
+  /*!**********************************************************!*\
+    !*** ./src/app/game/round-card/round-card.component.css ***!
+    \**********************************************************/
+
+  /*! exports provided: default */
+
+  /***/
+  function srcAppGameRoundCardRoundCardComponentCss(module, __webpack_exports__, __webpack_require__) {
+    "use strict";
+
+    __webpack_require__.r(__webpack_exports__);
+    /* harmony default export */
+
+
+    __webpack_exports__["default"] = "table {\n  width: 100%;\n  table-layout: fixed;\n\n}\nmat-card {\n  margin-top: 10px;\n}\n.name {\n  font-size: 1.3em;\n}\n.mat-column-predicted {\n  text-align: center;\n  border-right-width: 1px;\n  border-right-style: solid;\n  border-right-color: rgba(0,0,0,0.12);\n  padding-left: 0!important;\n}\n.mat-column-got {\n  text-align: center;\n  border-right-width: 1px;\n  border-right-style: solid;\n  border-right-color: rgba(0,0,0,0.12);\n}\n.mat-column-score {\n  text-align: center;\n  border-right-width: 1px;\n  border-right-style: solid;\n  border-right-color: rgba(0,0,0,0.12);\n}\n.mat-column-correctCount {\n  text-align: center;\n  padding-right: 0!important;\n}\n\n\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInNyYy9hcHAvZ2FtZS9yb3VuZC1jYXJkL3JvdW5kLWNhcmQuY29tcG9uZW50LmNzcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQTtFQUNFLFdBQVc7RUFDWCxtQkFBbUI7O0FBRXJCO0FBQ0E7RUFDRSxnQkFBZ0I7QUFDbEI7QUFDQTtFQUNFLGdCQUFnQjtBQUNsQjtBQUNBO0VBQ0Usa0JBQWtCO0VBQ2xCLHVCQUF1QjtFQUN2Qix5QkFBeUI7RUFDekIsb0NBQW9DO0VBQ3BDLHlCQUF5QjtBQUMzQjtBQUNBO0VBQ0Usa0JBQWtCO0VBQ2xCLHVCQUF1QjtFQUN2Qix5QkFBeUI7RUFDekIsb0NBQW9DO0FBQ3RDO0FBQ0E7RUFDRSxrQkFBa0I7RUFDbEIsdUJBQXVCO0VBQ3ZCLHlCQUF5QjtFQUN6QixvQ0FBb0M7QUFDdEM7QUFDQTtFQUNFLGtCQUFrQjtFQUNsQiwwQkFBMEI7QUFDNUIiLCJmaWxlIjoic3JjL2FwcC9nYW1lL3JvdW5kLWNhcmQvcm91bmQtY2FyZC5jb21wb25lbnQuY3NzIiwic291cmNlc0NvbnRlbnQiOlsidGFibGUge1xuICB3aWR0aDogMTAwJTtcbiAgdGFibGUtbGF5b3V0OiBmaXhlZDtcblxufVxubWF0LWNhcmQge1xuICBtYXJnaW4tdG9wOiAxMHB4O1xufVxuLm5hbWUge1xuICBmb250LXNpemU6IDEuM2VtO1xufVxuLm1hdC1jb2x1bW4tcHJlZGljdGVkIHtcbiAgdGV4dC1hbGlnbjogY2VudGVyO1xuICBib3JkZXItcmlnaHQtd2lkdGg6IDFweDtcbiAgYm9yZGVyLXJpZ2h0LXN0eWxlOiBzb2xpZDtcbiAgYm9yZGVyLXJpZ2h0LWNvbG9yOiByZ2JhKDAsMCwwLDAuMTIpO1xuICBwYWRkaW5nLWxlZnQ6IDAhaW1wb3J0YW50O1xufVxuLm1hdC1jb2x1bW4tZ290IHtcbiAgdGV4dC1hbGlnbjogY2VudGVyO1xuICBib3JkZXItcmlnaHQtd2lkdGg6IDFweDtcbiAgYm9yZGVyLXJpZ2h0LXN0eWxlOiBzb2xpZDtcbiAgYm9yZGVyLXJpZ2h0LWNvbG9yOiByZ2JhKDAsMCwwLDAuMTIpO1xufVxuLm1hdC1jb2x1bW4tc2NvcmUge1xuICB0ZXh0LWFsaWduOiBjZW50ZXI7XG4gIGJvcmRlci1yaWdodC13aWR0aDogMXB4O1xuICBib3JkZXItcmlnaHQtc3R5bGU6IHNvbGlkO1xuICBib3JkZXItcmlnaHQtY29sb3I6IHJnYmEoMCwwLDAsMC4xMik7XG59XG4ubWF0LWNvbHVtbi1jb3JyZWN0Q291bnQge1xuICB0ZXh0LWFsaWduOiBjZW50ZXI7XG4gIHBhZGRpbmctcmlnaHQ6IDAhaW1wb3J0YW50O1xufVxuXG4iXX0= */";
+    /***/
+  },
+
+  /***/
+  "./src/app/game/round-card/round-card.component.ts":
+  /*!*********************************************************!*\
+    !*** ./src/app/game/round-card/round-card.component.ts ***!
+    \*********************************************************/
+
+  /*! exports provided: RoundCardComponent */
+
+  /***/
+  function srcAppGameRoundCardRoundCardComponentTs(module, __webpack_exports__, __webpack_require__) {
+    "use strict";
+
+    __webpack_require__.r(__webpack_exports__);
+    /* harmony export (binding) */
+
+
+    __webpack_require__.d(__webpack_exports__, "RoundCardComponent", function () {
+      return RoundCardComponent;
+    });
+    /* harmony import */
+
+
+    var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(
+    /*! tslib */
+    "./node_modules/tslib/tslib.es6.js");
+    /* harmony import */
+
+
+    var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(
+    /*! @angular/core */
+    "./node_modules/@angular/core/fesm2015/core.js");
+    /* harmony import */
+
+
+    var _angular_material_table__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(
+    /*! @angular/material/table */
+    "./node_modules/@angular/material/esm2015/table.js");
+
+    var RoundCardComponent =
+    /*#__PURE__*/
+    function () {
+      function RoundCardComponent() {
+        _classCallCheck(this, RoundCardComponent);
+
+        this.tableData = [{
+          predicted: '',
+          got: '',
+          score: '',
+          diff: '',
+          correctCount: '',
+          name: ''
+        }];
+        this.columns = ['predicted', 'got', 'score', 'correctCount'];
+        this.dataSource = new _angular_material_table__WEBPACK_IMPORTED_MODULE_2__["MatTableDataSource"](this.tableData);
+      }
+
+      _createClass(RoundCardComponent, [{
+        key: "ngOnInit",
+        value: function ngOnInit() {
+          this.tableData[0].predicted = this.predicted;
+          this.tableData[0].score = this.score;
+          this.tableData[0].correctCount = this.correctCount;
+          this.tableData[0].got = this.got;
+          this.tableData[0].diff = +this.diff >= 0 ? '+' + this.diff : this.diff;
+        }
+      }]);
+
+      return RoundCardComponent;
+    }();
+
+    tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Input"])()], RoundCardComponent.prototype, "playerName", void 0);
+    tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Input"])()], RoundCardComponent.prototype, "predicted", void 0);
+    tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Input"])()], RoundCardComponent.prototype, "score", void 0);
+    tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Input"])()], RoundCardComponent.prototype, "diff", void 0);
+    tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Input"])()], RoundCardComponent.prototype, "got", void 0);
+    tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Input"])()], RoundCardComponent.prototype, "correctCount", void 0);
+    RoundCardComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
+      selector: 'app-round-card',
+      template: tslib__WEBPACK_IMPORTED_MODULE_0__["__importDefault"](__webpack_require__(
+      /*! raw-loader!./round-card.component.html */
+      "./node_modules/raw-loader/dist/cjs.js!./src/app/game/round-card/round-card.component.html")).default,
+      styles: [tslib__WEBPACK_IMPORTED_MODULE_0__["__importDefault"](__webpack_require__(
+      /*! ./round-card.component.css */
+      "./src/app/game/round-card/round-card.component.css")).default]
+    })], RoundCardComponent);
+    /***/
+  },
+
+  /***/
+  "./src/app/game/round-end/round-end.component.css":
+  /*!********************************************************!*\
+    !*** ./src/app/game/round-end/round-end.component.css ***!
+    \********************************************************/
+
+  /*! exports provided: default */
+
+  /***/
+  function srcAppGameRoundEndRoundEndComponentCss(module, __webpack_exports__, __webpack_require__) {
+    "use strict";
+
+    __webpack_require__.r(__webpack_exports__);
+    /* harmony default export */
+
+
+    __webpack_exports__["default"] = ".text-center {\n  text-align: center;\n}\n.title {\n  font-size: 1.3em;\n}\n.error-card {\n  background-color: #f44336;\n  text-align: center;\n}\nmat-card {\n  margin-top: 10px;\n}\n\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInNyYy9hcHAvZ2FtZS9yb3VuZC1lbmQvcm91bmQtZW5kLmNvbXBvbmVudC5jc3MiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUE7RUFDRSxrQkFBa0I7QUFDcEI7QUFDQTtFQUNFLGdCQUFnQjtBQUNsQjtBQUNBO0VBQ0UseUJBQXlCO0VBQ3pCLGtCQUFrQjtBQUNwQjtBQUVBO0VBQ0UsZ0JBQWdCO0FBQ2xCIiwiZmlsZSI6InNyYy9hcHAvZ2FtZS9yb3VuZC1lbmQvcm91bmQtZW5kLmNvbXBvbmVudC5jc3MiLCJzb3VyY2VzQ29udGVudCI6WyIudGV4dC1jZW50ZXIge1xuICB0ZXh0LWFsaWduOiBjZW50ZXI7XG59XG4udGl0bGUge1xuICBmb250LXNpemU6IDEuM2VtO1xufVxuLmVycm9yLWNhcmQge1xuICBiYWNrZ3JvdW5kLWNvbG9yOiAjZjQ0MzM2O1xuICB0ZXh0LWFsaWduOiBjZW50ZXI7XG59XG5cbm1hdC1jYXJkIHtcbiAgbWFyZ2luLXRvcDogMTBweDtcbn1cbiJdfQ== */";
+    /***/
+  },
+
+  /***/
+  "./src/app/game/round-end/round-end.component.ts":
+  /*!*******************************************************!*\
+    !*** ./src/app/game/round-end/round-end.component.ts ***!
+    \*******************************************************/
+
+  /*! exports provided: RoundEndComponent */
+
+  /***/
+  function srcAppGameRoundEndRoundEndComponentTs(module, __webpack_exports__, __webpack_require__) {
+    "use strict";
+
+    __webpack_require__.r(__webpack_exports__);
+    /* harmony export (binding) */
+
+
+    __webpack_require__.d(__webpack_exports__, "RoundEndComponent", function () {
+      return RoundEndComponent;
+    });
+    /* harmony import */
+
+
+    var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(
+    /*! tslib */
+    "./node_modules/tslib/tslib.es6.js");
+    /* harmony import */
+
+
+    var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(
+    /*! @angular/core */
+    "./node_modules/@angular/core/fesm2015/core.js");
+    /* harmony import */
+
+
+    var src_app_game_data_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(
+    /*! src/app/game-data.service */
+    "./src/app/game-data.service.ts");
+
+    var RoundEndComponent =
+    /*#__PURE__*/
+    function () {
+      function RoundEndComponent(gameData) {
+        _classCallCheck(this, RoundEndComponent);
+
+        this.gameData = gameData;
+        this.roundResults = [];
+        this.invalid = false;
+      }
+
+      _createClass(RoundEndComponent, [{
+        key: "ngOnInit",
+        value: function ngOnInit() {
+          var _iteratorNormalCompletion7 = true;
+          var _didIteratorError7 = false;
+          var _iteratorError7 = undefined;
+
+          try {
+            for (var _iterator7 = this.gameData.playerNames[Symbol.iterator](), _step7; !(_iteratorNormalCompletion7 = (_step7 = _iterator7.next()).done); _iteratorNormalCompletion7 = true) {
+              var name = _step7.value;
+              this.roundResults.push({
+                name: name,
+                predicted: this.gameData.roundPredictions.get(name).toString(),
+                got: this.gameData.roundGots.get(name).toString(),
+                score: this.gameData.players.get(name).totalScore.toString(),
+                correctCount: this.gameData.players.get(name).correctCount.toString(),
+                diff: this.gameData.roundPoints.get(name).toString()
+              });
+            }
+          } catch (err) {
+            _didIteratorError7 = true;
+            _iteratorError7 = err;
+          } finally {
+            try {
+              if (!_iteratorNormalCompletion7 && _iterator7.return != null) {
+                _iterator7.return();
+              }
+            } finally {
+              if (_didIteratorError7) {
+                throw _iteratorError7;
+              }
+            }
+          }
+
+          this.invalid = !this.gameData.checkRoundValidity();
+        }
+      }]);
+
+      return RoundEndComponent;
+    }();
+
+    RoundEndComponent.ctorParameters = function () {
+      return [{
+        type: src_app_game_data_service__WEBPACK_IMPORTED_MODULE_2__["GameDataService"]
+      }];
+    };
+
+    RoundEndComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
+      selector: 'app-round-end',
+      template: tslib__WEBPACK_IMPORTED_MODULE_0__["__importDefault"](__webpack_require__(
+      /*! raw-loader!./round-end.component.html */
+      "./node_modules/raw-loader/dist/cjs.js!./src/app/game/round-end/round-end.component.html")).default,
+      styles: [tslib__WEBPACK_IMPORTED_MODULE_0__["__importDefault"](__webpack_require__(
+      /*! ./round-end.component.css */
+      "./src/app/game/round-end/round-end.component.css")).default]
+    })], RoundEndComponent);
+    /***/
+  },
+
+  /***/
   "./src/app/game/score-card/score-card.component.css":
   /*!**********************************************************!*\
     !*** ./src/app/game/score-card/score-card.component.css ***!
@@ -2455,7 +2903,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       }, {
         key: "ngOnInit",
         value: function ngOnInit() {
-          console.log(this.primary);
+          console.log('PRIMARY:', this.primary !== undefined);
         }
       }]);
 
@@ -2739,7 +3187,8 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         this.pregameInfo = {
           names: [],
           style: '181',
-          bonus: '5'
+          bonus: '5',
+          penalty: '5'
         };
         this.currentStage = _LandingEnum__WEBPACK_IMPORTED_MODULE_2__["LandingStage"].NAME_STAGE;
         this.isStageValid = false;
@@ -2766,6 +3215,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
           var options = this.optionsComponent.getOptions();
           this.pregameInfo.bonus = options.bonus;
           this.pregameInfo.style = options.style;
+          this.pregameInfo.penalty = options.penalty;
         }
       }, {
         key: "handleLogin",
@@ -2782,6 +3232,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
           var options = this.optionsComponent.getOptions();
           this.gameData.options = {
             bonusAmount: +options.bonus,
+            penaltyAmount: +options.penalty,
             playStyle: options.style
           };
           this.gameData.addPlayers(this.pregameInfo.names);
@@ -2899,26 +3350,26 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
           var _this = this;
 
           if (this.namesList !== undefined && this.namesList.length !== 0) {
-            var _iteratorNormalCompletion5 = true;
-            var _didIteratorError5 = false;
-            var _iteratorError5 = undefined;
+            var _iteratorNormalCompletion8 = true;
+            var _didIteratorError8 = false;
+            var _iteratorError8 = undefined;
 
             try {
-              for (var _iterator5 = this.namesList[Symbol.iterator](), _step5; !(_iteratorNormalCompletion5 = (_step5 = _iterator5.next()).done); _iteratorNormalCompletion5 = true) {
-                var name = _step5.value;
+              for (var _iterator8 = this.namesList[Symbol.iterator](), _step8; !(_iteratorNormalCompletion8 = (_step8 = _iterator8.next()).done); _iteratorNormalCompletion8 = true) {
+                var name = _step8.value;
                 this.addPlayerName(name);
               }
             } catch (err) {
-              _didIteratorError5 = true;
-              _iteratorError5 = err;
+              _didIteratorError8 = true;
+              _iteratorError8 = err;
             } finally {
               try {
-                if (!_iteratorNormalCompletion5 && _iterator5.return != null) {
-                  _iterator5.return();
+                if (!_iteratorNormalCompletion8 && _iterator8.return != null) {
+                  _iterator8.return();
                 }
               } finally {
-                if (_didIteratorError5) {
-                  throw _iteratorError5;
+                if (_didIteratorError8) {
+                  throw _iteratorError8;
                 }
               }
             }
@@ -2952,26 +3403,26 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         key: "getNamesList",
         value: function getNamesList() {
           var namesList = [];
-          var _iteratorNormalCompletion6 = true;
-          var _didIteratorError6 = false;
-          var _iteratorError6 = undefined;
+          var _iteratorNormalCompletion9 = true;
+          var _didIteratorError9 = false;
+          var _iteratorError9 = undefined;
 
           try {
-            for (var _iterator6 = this.playerNames.controls[Symbol.iterator](), _step6; !(_iteratorNormalCompletion6 = (_step6 = _iterator6.next()).done); _iteratorNormalCompletion6 = true) {
-              var control = _step6.value;
+            for (var _iterator9 = this.playerNames.controls[Symbol.iterator](), _step9; !(_iteratorNormalCompletion9 = (_step9 = _iterator9.next()).done); _iteratorNormalCompletion9 = true) {
+              var control = _step9.value;
               namesList.push(control.value);
             }
           } catch (err) {
-            _didIteratorError6 = true;
-            _iteratorError6 = err;
+            _didIteratorError9 = true;
+            _iteratorError9 = err;
           } finally {
             try {
-              if (!_iteratorNormalCompletion6 && _iterator6.return != null) {
-                _iterator6.return();
+              if (!_iteratorNormalCompletion9 && _iterator9.return != null) {
+                _iterator9.return();
               }
             } finally {
-              if (_didIteratorError6) {
-                throw _iteratorError6;
+              if (_didIteratorError9) {
+                throw _iteratorError9;
               }
             }
           }
@@ -2998,6 +3449,93 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
   },
 
   /***/
+  "./src/app/landing/options/options-option/options-option.component.css":
+  /*!*****************************************************************************!*\
+    !*** ./src/app/landing/options/options-option/options-option.component.css ***!
+    \*****************************************************************************/
+
+  /*! exports provided: default */
+
+  /***/
+  function srcAppLandingOptionsOptionsOptionOptionsOptionComponentCss(module, __webpack_exports__, __webpack_require__) {
+    "use strict";
+
+    __webpack_require__.r(__webpack_exports__);
+    /* harmony default export */
+
+
+    __webpack_exports__["default"] = ".options-group {\n  font-size: 1.3em;\n  width: 100%;\n}\n.option-buttons {\n  float:right;\n}\nmat-card {\n  margin-top: 15px;\n}\n.option-title {\n  position: absolute;\n  padding-top: 9px;\n}\np {\n  margin-bottom: 0;\n  padding-left: 10px;\n  padding-right: 10px;\n}\n\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInNyYy9hcHAvbGFuZGluZy9vcHRpb25zL29wdGlvbnMtb3B0aW9uL29wdGlvbnMtb3B0aW9uLmNvbXBvbmVudC5jc3MiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUE7RUFDRSxnQkFBZ0I7RUFDaEIsV0FBVztBQUNiO0FBQ0E7RUFDRSxXQUFXO0FBQ2I7QUFDQTtFQUNFLGdCQUFnQjtBQUNsQjtBQUNBO0VBQ0Usa0JBQWtCO0VBQ2xCLGdCQUFnQjtBQUNsQjtBQUNBO0VBQ0UsZ0JBQWdCO0VBQ2hCLGtCQUFrQjtFQUNsQixtQkFBbUI7QUFDckIiLCJmaWxlIjoic3JjL2FwcC9sYW5kaW5nL29wdGlvbnMvb3B0aW9ucy1vcHRpb24vb3B0aW9ucy1vcHRpb24uY29tcG9uZW50LmNzcyIsInNvdXJjZXNDb250ZW50IjpbIi5vcHRpb25zLWdyb3VwIHtcbiAgZm9udC1zaXplOiAxLjNlbTtcbiAgd2lkdGg6IDEwMCU7XG59XG4ub3B0aW9uLWJ1dHRvbnMge1xuICBmbG9hdDpyaWdodDtcbn1cbm1hdC1jYXJkIHtcbiAgbWFyZ2luLXRvcDogMTVweDtcbn1cbi5vcHRpb24tdGl0bGUge1xuICBwb3NpdGlvbjogYWJzb2x1dGU7XG4gIHBhZGRpbmctdG9wOiA5cHg7XG59XG5wIHtcbiAgbWFyZ2luLWJvdHRvbTogMDtcbiAgcGFkZGluZy1sZWZ0OiAxMHB4O1xuICBwYWRkaW5nLXJpZ2h0OiAxMHB4O1xufVxuIl19 */";
+    /***/
+  },
+
+  /***/
+  "./src/app/landing/options/options-option/options-option.component.ts":
+  /*!****************************************************************************!*\
+    !*** ./src/app/landing/options/options-option/options-option.component.ts ***!
+    \****************************************************************************/
+
+  /*! exports provided: OptionsOptionComponent */
+
+  /***/
+  function srcAppLandingOptionsOptionsOptionOptionsOptionComponentTs(module, __webpack_exports__, __webpack_require__) {
+    "use strict";
+
+    __webpack_require__.r(__webpack_exports__);
+    /* harmony export (binding) */
+
+
+    __webpack_require__.d(__webpack_exports__, "OptionsOptionComponent", function () {
+      return OptionsOptionComponent;
+    });
+    /* harmony import */
+
+
+    var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(
+    /*! tslib */
+    "./node_modules/tslib/tslib.es6.js");
+    /* harmony import */
+
+
+    var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(
+    /*! @angular/core */
+    "./node_modules/@angular/core/fesm2015/core.js");
+
+    var OptionsOptionComponent =
+    /*#__PURE__*/
+    function () {
+      function OptionsOptionComponent() {
+        _classCallCheck(this, OptionsOptionComponent);
+
+        this.toggleChange = new _angular_core__WEBPACK_IMPORTED_MODULE_1__["EventEmitter"]();
+      }
+
+      _createClass(OptionsOptionComponent, [{
+        key: "change",
+        value: function change(e) {
+          this.toggleChange.emit(e);
+        }
+      }]);
+
+      return OptionsOptionComponent;
+    }();
+
+    tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Output"])()], OptionsOptionComponent.prototype, "toggleChange", void 0);
+    tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Input"])()], OptionsOptionComponent.prototype, "toggles", void 0);
+    tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Input"])()], OptionsOptionComponent.prototype, "curVal", void 0);
+    tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Input"])()], OptionsOptionComponent.prototype, "name", void 0);
+    OptionsOptionComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
+      selector: 'app-options-option',
+      template: tslib__WEBPACK_IMPORTED_MODULE_0__["__importDefault"](__webpack_require__(
+      /*! raw-loader!./options-option.component.html */
+      "./node_modules/raw-loader/dist/cjs.js!./src/app/landing/options/options-option/options-option.component.html")).default,
+      styles: [tslib__WEBPACK_IMPORTED_MODULE_0__["__importDefault"](__webpack_require__(
+      /*! ./options-option.component.css */
+      "./src/app/landing/options/options-option/options-option.component.css")).default]
+    })], OptionsOptionComponent);
+    /***/
+  },
+
+  /***/
   "./src/app/landing/options/options.component.css":
   /*!*******************************************************!*\
     !*** ./src/app/landing/options/options.component.css ***!
@@ -3013,7 +3551,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
     /* harmony default export */
 
 
-    __webpack_exports__["default"] = ".options-group {\n  font-size: 1.3em;\n  width: 100%;\n}\n.option-buttons {\n  float:right;\n}\nmat-card {\n  margin-top: 15px;\n}\n.option-title {\n  position: absolute;\n  padding-top: 9px;\n}\np {\n  margin-bottom: 0;\n  padding-left: 10px;\n  padding-right: 10px;\n}\n\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInNyYy9hcHAvbGFuZGluZy9vcHRpb25zL29wdGlvbnMuY29tcG9uZW50LmNzcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQTtFQUNFLGdCQUFnQjtFQUNoQixXQUFXO0FBQ2I7QUFDQTtFQUNFLFdBQVc7QUFDYjtBQUNBO0VBQ0UsZ0JBQWdCO0FBQ2xCO0FBQ0E7RUFDRSxrQkFBa0I7RUFDbEIsZ0JBQWdCO0FBQ2xCO0FBQ0E7RUFDRSxnQkFBZ0I7RUFDaEIsa0JBQWtCO0VBQ2xCLG1CQUFtQjtBQUNyQiIsImZpbGUiOiJzcmMvYXBwL2xhbmRpbmcvb3B0aW9ucy9vcHRpb25zLmNvbXBvbmVudC5jc3MiLCJzb3VyY2VzQ29udGVudCI6WyIub3B0aW9ucy1ncm91cCB7XG4gIGZvbnQtc2l6ZTogMS4zZW07XG4gIHdpZHRoOiAxMDAlO1xufVxuLm9wdGlvbi1idXR0b25zIHtcbiAgZmxvYXQ6cmlnaHQ7XG59XG5tYXQtY2FyZCB7XG4gIG1hcmdpbi10b3A6IDE1cHg7XG59XG4ub3B0aW9uLXRpdGxlIHtcbiAgcG9zaXRpb246IGFic29sdXRlO1xuICBwYWRkaW5nLXRvcDogOXB4O1xufVxucCB7XG4gIG1hcmdpbi1ib3R0b206IDA7XG4gIHBhZGRpbmctbGVmdDogMTBweDtcbiAgcGFkZGluZy1yaWdodDogMTBweDtcbn1cbiJdfQ== */";
+    __webpack_exports__["default"] = "\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IiIsImZpbGUiOiJzcmMvYXBwL2xhbmRpbmcvb3B0aW9ucy9vcHRpb25zLmNvbXBvbmVudC5jc3MifQ== */";
     /***/
   },
 
@@ -3054,6 +3592,10 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
     function () {
       function OptionsComponent() {
         _classCallCheck(this, OptionsComponent);
+
+        this.bonusOptions = ['5', '10'];
+        this.penaltyOptions = ['0', '5', '10'];
+        this.styleOptions = ['181', '818'];
       }
 
       _createClass(OptionsComponent, [{
@@ -3061,7 +3603,8 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         value: function getOptions() {
           return {
             style: this.style,
-            bonus: this.bonus
+            bonus: this.bonus,
+            penalty: this.penalty
           };
         }
       }, {
@@ -3074,6 +3617,11 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         value: function styleChange(e) {
           this.style = e.value;
         }
+      }, {
+        key: "penaltyChange",
+        value: function penaltyChange(e) {
+          this.penalty = e.value;
+        }
       }]);
 
       return OptionsComponent;
@@ -3081,6 +3629,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
     tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Input"])()], OptionsComponent.prototype, "style", void 0);
     tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Input"])()], OptionsComponent.prototype, "bonus", void 0);
+    tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Input"])()], OptionsComponent.prototype, "penalty", void 0);
     OptionsComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
       selector: 'app-options',
       template: tslib__WEBPACK_IMPORTED_MODULE_0__["__importDefault"](__webpack_require__(
