@@ -61,6 +61,7 @@ export class GameComponent implements OnInit {
 
   previousStage() {
     if (this.gameData.currentStage !== 0) {
+      this.gameData.setToLastPlayer();
       this.gameData.currentStage--;
     }
   }

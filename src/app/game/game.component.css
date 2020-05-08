@@ -10,6 +10,8 @@ app-action {
 }
 .continue {
   flex:1;
+  margin-left:10px;
+  margin-right: 10px;
 }
 .full {
   width: 100%;

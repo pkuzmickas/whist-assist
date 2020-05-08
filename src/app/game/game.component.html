@@ -10,7 +10,7 @@
     </div>
     <div *ngSwitchCase="GameStages.FINAL_STAGE">
       <app-leaderboard></app-leaderboard>
-      <div *ngIf="gameData.currentStage === GameStages.FINAL_STAGE" class='buttoncont pt-4'>
+      <div *ngIf="gameData.currentStage === GameStages.FINAL_STAGE" class='buttoncont pt-4 container'>
         <button (click)='gameData.nextRound()' class="continue" mat-raised-button color="accent">CONTINUE</button>
       </div>
     </div>
