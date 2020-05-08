@@ -33,3 +33,6 @@ body {
 .text-center {
   text-align: center;
 }
+.primary-color-bg {
+  background-color: #ffc107;
+}

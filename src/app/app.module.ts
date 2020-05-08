@@ -33,6 +33,9 @@ import { KeyGridComponent } from './game/key-grid/key-grid.component';
 import { LeaderboardComponent } from './game/leaderboard/leaderboard.component';
 import { ScoreCardComponent } from './game/score-card/score-card.component';
 import { HighlightDirective } from './highlight.directive';
+import { OptionsOptionComponent } from './landing/options/options-option/options-option.component';
+import { RoundEndComponent } from './game/round-end/round-end.component';
+import { RoundCardComponent } from './game/round-card/round-card.component';
 
 
 @NgModule({
@@ -50,7 +53,10 @@ import { HighlightDirective } from './highlight.directive';
     KeyGridComponent,
     LeaderboardComponent,
     ScoreCardComponent,
-    HighlightDirective
+    HighlightDirective,
+    OptionsOptionComponent,
+    RoundEndComponent,
+    RoundCardComponent
   ],
   imports: [
     BrowserModule,

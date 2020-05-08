@@ -10,12 +10,14 @@ export class GameDataService {
   players: Map<string, PlayerData> = new Map<string, PlayerData>();
   roundPredictions: Map<string, number> = new Map<string, number>();
   roundGots: Map<string, number> = new Map<string, number>();
+  roundPoints: Map<string, number> = new Map<string, number>();
   options: GameOptions;
   playerNames: Array<string> = [];
   currentPlayerId: number;
+  startingPlayerId: number;
   currentStage: GameStages = GameStages.GUESS_STAGE;
   roundOf;
-  completedRoundsInRound = 0;
+  completedRoundsInRoundOf = 0;
   goingUp;
   loopDone = false;
   constructor() {
@@ -36,7 +38,8 @@ export class GameDataService {
     }
   }
   initGame() {
-    this.currentPlayerId = 0;
+    this.startingPlayerId = 0;
+    this.currentPlayerId = this.startingPlayerId;
     if (this.options.playStyle === '818') {
       this.roundOf = 8;
       this.goingUp = false;
@@ -50,12 +53,17 @@ export class GameDataService {
     if (this.currentPlayerId === 0) { // next stage
       this.currentStage++;
       if (this.currentStage === GameStages.FINAL_STAGE) {
-        if ((this.options.playStyle === '181' && this.roundOf === 1 && this.completedRoundsInRound === this.players.size - 1 && this.loopDone)
-          || (this.options.playStyle === '818' && this.roundOf === 8 && this.completedRoundsInRound === this.players.size - 1 && this.loopDone)) {
+        // tslint:disable-next-line:max-line-length
+        if ((this.options.playStyle === '181' && this.roundOf === 1 && this.completedRoundsInRoundOf === this.players.size - 1 && this.loopDone)
+          // tslint:disable-next-line:max-line-length
+          || (this.options.playStyle === '818' && this.roundOf === 8 && this.completedRoundsInRoundOf === this.players.size - 1 && this.loopDone)) {
           this.currentStage = GameStages.GAME_OVER;
         }
       }
     }
+  }
+  setToLastPlayer() {
+    this.currentPlayerId = this.playerNames.length - 1;
   }
   addGuess(amount) {
     const onNewestStep = this.isOnNewestStep();
@@ -91,6 +99,9 @@ export class GameDataService {
       this.currentStage--;
     }
   }
+  isOnLastStepOfStage() {
+    return this.currentPlayerId === this.playerNames.length-1;
+  }
   isOnNewestStep(): boolean {
     const stepsTaken = this.roundPredictions.size + this.roundGots.size;
     const curStep = this.currentStage * this.playerNames.length + this.currentPlayerId;
@@ -112,6 +123,7 @@ export class GameDataService {
     } else {
       roundPoints -= Math.abs(got - predicted);
     }
+    this.roundPoints.set(playerName, roundPoints);
     return roundPoints;
   }
   scoreCompareFunction(playerA: LeaderboardEntry, playerB: LeaderboardEntry) {
@@ -125,7 +137,7 @@ export class GameDataService {
   }
   getLeaderboard(): Array<LeaderboardEntry> {
     const leaderboard: Array<LeaderboardEntry> = [];
-    for (const playerName of this.players.keys()) {
+    for (const playerName of this.playerNames) {
       leaderboard.push({
         score: this.players.get(playerName).totalScore,
         name: playerName
@@ -142,21 +154,30 @@ export class GameDataService {
     this.playerNames = [];
     this.roundOf = 1;
     this.loopDone = false;
-    this.completedRoundsInRound = 0;
+    this.completedRoundsInRoundOf = 0;
+  }
+  resortArray() {
+    for (let i = 0; i < this.playerNames.length - 1; i++) {
+      const temp = this.playerNames[i];
+      this.playerNames[i] = this.playerNames[i + 1];
+      this.playerNames[i + 1] = temp;
+    }
   }
   nextRound() {
 
     this.currentStage = GameStages.GUESS_STAGE;
     this.roundGots.clear();
     this.roundPredictions.clear();
-    this.currentPlayerId = 0;
+    this.resortArray();
+    // this.startingPlayerId = (this.startingPlayerId + 1) % this.playerNames.length;
+    this.currentPlayerId = this.startingPlayerId;
     let addingRound = true;
     if (this.roundOf === 1 || this.roundOf === 8) {
-      this.completedRoundsInRound++;
+      this.completedRoundsInRoundOf++;
       addingRound = false;
-      if (this.completedRoundsInRound === this.players.size) {
+      if (this.completedRoundsInRoundOf === this.players.size) {
         addingRound = true;
-        this.completedRoundsInRound = 0;
+        this.completedRoundsInRoundOf = 0;
         if (this.roundOf === 1) {
           this.goingUp = true;
           if (this.options.playStyle === '818') {
@@ -172,14 +193,27 @@ export class GameDataService {
         }
       }
     }
-    console.log(this.roundOf);
-    console.log(addingRound);
-    console.log(this.goingUp);
-
     if (addingRound) {
       this.goingUp ? this.roundOf++ : this.roundOf--;
     }
-    console.log(this.roundOf);
+  }
+  getNotViableGuess() {
+    let guessSum = 0;
+    for (const guess of this.roundPredictions.values()) {
+      guessSum += guess;
+    }
+    const diff = this.roundOf - guessSum;
+    if (diff >= 0) {
+      return diff;
+    }
+    return undefined;
+  }
+  checkRoundValidity() {
+    let sum = 0;
+    for (const got of this.roundGots.values()) {
+      sum += got;
+    }
+    return sum === this.roundOf;
   }
 }
 
@@ -191,5 +225,6 @@ export interface PlayerData {
 
 export interface GameOptions {
   bonusAmount: number;
+  penaltyAmount: number;
   playStyle: string;
 }

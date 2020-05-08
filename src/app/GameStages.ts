@@ -1,6 +1,7 @@
 export enum GameStages {
   GUESS_STAGE,
   GOT_STAGE,
+  ROUND_RESULT_STAGE,
   FINAL_STAGE,
   GAME_OVER
 }

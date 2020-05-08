@@ -61,18 +61,18 @@ export class ActionComponent implements OnInit {
   }
 
   previousCard() {
-    this.cardChanged.emit();
     if(this.leftEnabled) {
       this.gameData.previousPlayer();
       this.updateCard();
     }
+    this.cardChanged.emit();
   }
   nextCard() {
-    this.cardChanged.emit();
     if(this.rightEnabled) {
       this.gameData.nextPlayer();
       this.updateCard();
     }
+    this.cardChanged.emit();
   }
 }
 
@@ -81,5 +81,3 @@ export interface ScoreTrio {
   got: string;
   score: string;
 }
-
-
