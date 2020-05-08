@@ -13,14 +13,15 @@ export class LeaderboardComponent implements OnInit {
   @Input() title = 'LEADERBOARD';
 
   GameStages = GameStages;
-  totalLeaderboard: Array<LeaderboardEntry>;
+  leader: LeaderboardEntry;
   subLeaderboard: Array<LeaderboardEntry>;
 
   constructor(private gameData: GameDataService) { }
 
   ngOnInit() {
-    this.totalLeaderboard = this.gameData.getLeaderboard();
-    this.subLeaderboard = this.totalLeaderboard.slice(3);
+    const leaderboard = this.gameData.getLeaderboard();
+    this.subLeaderboard = leaderboard.slice(1);
+    this.leader = leaderboard[0];
   }
 
 }

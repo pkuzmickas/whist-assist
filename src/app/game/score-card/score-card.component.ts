@@ -5,7 +5,7 @@ import { Component, OnInit, Input } from '@angular/core';
   templateUrl: './score-card.component.html',
   styleUrls: ['./score-card.component.css']
 })
-export class ScoreCardComponent implements OnInit{
+export class ScoreCardComponent implements OnInit {
 
   @Input() rank: number;
   @Input() name: string;
@@ -26,7 +26,7 @@ export class ScoreCardComponent implements OnInit{
 
   constructor() { }
   ngOnInit(): void {
-    console.log(this.primary);
+    console.log('PRIMARY:', this.primary !== undefined);
   }
 
 

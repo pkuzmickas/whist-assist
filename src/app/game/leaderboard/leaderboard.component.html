@@ -12,32 +12,15 @@
         primary
         size="1.3em"
         rank="1"
-        [name]="totalLeaderboard[0].name"
-        [score]="totalLeaderboard[0].score"
+        [name]="leader.name"
+        [score]="leader.score"
       ></app-score-card>
     </div>
   </div>
   <div class="row">
-    <div class="col">
+    <div class="col" *ngFor="let noob of subLeaderboard; index as i">
       <app-score-card
-        rank="2"
-        [name]="totalLeaderboard[1].name"
-        [score]="totalLeaderboard[1].score"
-      ></app-score-card>
-    </div>
-    <div class="col">
-      <app-score-card
-        rank="3"
-        [name]="totalLeaderboard[2].name"
-        [score]="totalLeaderboard[2].score"
-      ></app-score-card>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col noob" *ngFor="let noob of subLeaderboard; index as i">
-      <app-score-card
-        size="0.7em"
-        rank="{{ i + 4 }}"
+        rank="{{ i + 2 }}"
         [name]="noob.name"
         [score]="noob.score"
       ></app-score-card>
