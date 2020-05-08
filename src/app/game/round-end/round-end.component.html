@@ -1,0 +1,21 @@
+<div class="container">
+  <div class="row">
+    <div class="col text-center">
+      <mat-card>
+        <span class="title">Round Results</span>
+      </mat-card>
+    </div>
+  </div>
+  <div class="row" *ngFor="let result of roundResults">
+    <div class="col" >
+      <app-round-card
+        [playerName]="result.name"
+        [predicted]="result.predicted"
+        [got]="result.got"
+        [score]="result.score"
+        [diff]="result.diff"
+        [correctCount]="result.correctCount"
+      ></app-round-card>
+    </div>
+  </div>
+</div>

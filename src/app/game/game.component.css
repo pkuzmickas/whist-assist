@@ -10,8 +10,9 @@ app-action {
 }
 .continue {
   flex:1;
-  margin-top: 10vh;
-  margin-bottom: 10vh;
+}
+.full {
+  width: 100%;
 }
 .buttoncont {
   display: flex;

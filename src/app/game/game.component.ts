@@ -17,7 +17,7 @@ export class GameComponent implements OnInit {
   @ViewChild(GuessesComponent, { static: false }) guessComponent: GuessesComponent;
   @ViewChild(ActionComponent, { static: false }) actionComponent: ActionComponent;
 
-  constructor(private gameData: GameDataService, private router: Router) {
+  constructor(public gameData: GameDataService, private router: Router) {
 
   }
   ngOnInit(): void {
@@ -34,7 +34,7 @@ export class GameComponent implements OnInit {
     this.router.navigate(['/']);
   }
   updateCardsWithGuess() {
-    if(this.gameData.getNewestStage() === GameStages.GUESS_STAGE) {
+    if (this.gameData.getNewestStage() === GameStages.GUESS_STAGE) {
       this.guessComponent.updatePredictions();
     } else if (this.gameData.getNewestStage() === GameStages.GOT_STAGE) {
       this.guessComponent.updateScores();
@@ -57,6 +57,21 @@ export class GameComponent implements OnInit {
         this.updateCardsWithGot();
         break;
     }
+  }
+
+  previousStage() {
+    if (this.gameData.currentStage !== 0) {
+      this.gameData.currentStage--;
+    }
+  }
+  nextStage() {
+    if (this.gameData.currentStage !== GameStages.FINAL_STAGE) {
+      this.gameData.currentStage++;
+    }
+  }
+
+  getRoundNumber2() {
+    return this.gameData.roundOf === 1 || this.gameData.roundOf === 8 ? this.gameData.completedRoundsInRoundOf + 1 : undefined;
   }
 
 

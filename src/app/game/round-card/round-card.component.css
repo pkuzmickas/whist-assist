@@ -1,0 +1,35 @@
+table {
+  width: 100%;
+  table-layout: fixed;
+
+}
+mat-card {
+  margin-top: 10px;
+}
+.name {
+  font-size: 1.3em;
+}
+.mat-column-predicted {
+  text-align: center;
+  border-right-width: 1px;
+  border-right-style: solid;
+  border-right-color: rgba(0,0,0,0.12);
+  padding-left: 0!important;
+}
+.mat-column-got {
+  text-align: center;
+  border-right-width: 1px;
+  border-right-style: solid;
+  border-right-color: rgba(0,0,0,0.12);
+}
+.mat-column-score {
+  text-align: center;
+  border-right-width: 1px;
+  border-right-style: solid;
+  border-right-color: rgba(0,0,0,0.12);
+}
+.mat-column-correctCount {
+  text-align: center;
+  padding-right: 0!important;
+}
+

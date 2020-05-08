@@ -1,9 +1,16 @@
-<app-navbar [title]='gameData.currentStage === GameStages.GAME_OVER ? "GAME OVER" : undefined' [roundNumber]="gameData.roundOf" [roundNumber2]='gameData.roundOf===1 || gameData.roundOf===8 ? gameData.completedRoundsInRound+1 : undefined'></app-navbar>
+<app-navbar [title]='gameData.currentStage === GameStages.GAME_OVER ? "GAME OVER" : undefined' [roundNumber]="gameData.roundOf" [roundNumber2]='getRoundNumber2()'></app-navbar>
 <div class="container">
   <div [ngSwitch]="gameData.currentStage">
+    <div *ngSwitchCase="GameStages.ROUND_RESULT_STAGE">
+      <app-round-end></app-round-end>
+      <div class='buttoncont pt-4 pb-4'>
+        <button (click)='previousStage()' class="continue" mat-raised-button color="accent">BACK</button>
+        <button (click)='nextStage()' class="continue" mat-raised-button color="accent">CONTINUE</button>
+      </div>
+    </div>
     <div *ngSwitchCase="GameStages.FINAL_STAGE">
       <app-leaderboard></app-leaderboard>
-      <div *ngIf="gameData.currentStage === GameStages.FINAL_STAGE" class='buttoncont'>
+      <div *ngIf="gameData.currentStage === GameStages.FINAL_STAGE" class='buttoncont pt-4'>
         <button (click)='gameData.nextRound()' class="continue" mat-raised-button color="accent">CONTINUE</button>
       </div>
     </div>
