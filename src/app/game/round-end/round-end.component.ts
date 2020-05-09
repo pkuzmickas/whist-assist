@@ -21,7 +21,7 @@ export class RoundEndComponent implements OnInit {
         predicted: this.gameData.roundPredictions.get(name).toString(),
         got: this.gameData.roundGots.get(name).toString(),
         score: this.gameData.players.get(name).totalScore.toString(),
-        correctCount: this.gameData.players.get(name).correctCount.toString(),
+        correctCount: this.gameData.getCorrectCountForPlayer(name).toString(),
         diff: this.gameData.roundPoints.get(name).toString()
       });
     }

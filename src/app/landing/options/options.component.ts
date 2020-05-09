@@ -11,7 +11,7 @@ export class OptionsComponent {
   @Input() bonus: string;
   @Input() penalty: string;
 
-  bonusOptions = ['5', '10'];
+  bonusOptions = ['0', '5', '10'];
   penaltyOptions = ['0', '5', '10'];
   styleOptions = ['181', '818'];
 

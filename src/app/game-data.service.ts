@@ -32,7 +32,6 @@ export class GameDataService {
       this.playerNames.push(name);
       this.players.set(name, {
         totalScore: 0,
-        mistakeCount: 0,
         correctCount: 0
       });
     }
@@ -100,7 +99,7 @@ export class GameDataService {
     }
   }
   isOnLastStepOfStage() {
-    return this.currentPlayerId === this.playerNames.length-1;
+    return this.currentPlayerId === this.playerNames.length - 1;
   }
   isOnNewestStep(): boolean {
     const stepsTaken = this.roundPredictions.size + this.roundGots.size;
@@ -163,13 +162,32 @@ export class GameDataService {
       this.playerNames[i + 1] = temp;
     }
   }
+  getCorrectCountForPlayer(name) {
+    if (this.roundPoints.get(name) > 0) {
+      if (this.players.get(name).correctCount < 0) {
+        return 1;
+      } else {
+        return this.players.get(name).correctCount + 1;
+      }
+    } else {
+      if (this.players.get(name).correctCount > 0) {
+        return -1;
+      } else {
+        return this.players.get(name).correctCount - 1;
+      }
+    }
+  }
+  updateCorrectCounts() {
+    for (const name of this.playerNames) {
+      this.players.get(name).correctCount = this.getCorrectCountForPlayer(name);
+    }
+  }
   nextRound() {
-
+    this.updateCorrectCounts();
     this.currentStage = GameStages.GUESS_STAGE;
     this.roundGots.clear();
     this.roundPredictions.clear();
     this.resortArray();
-    // this.startingPlayerId = (this.startingPlayerId + 1) % this.playerNames.length;
     this.currentPlayerId = this.startingPlayerId;
     let addingRound = true;
     if (this.roundOf === 1 || this.roundOf === 8) {
@@ -219,7 +237,6 @@ export class GameDataService {
 
 export interface PlayerData {
   totalScore: number;
-  mistakeCount: number;
   correctCount: number;
 }
 
