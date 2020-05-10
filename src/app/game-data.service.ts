@@ -119,8 +119,14 @@ export class GameDataService {
     const predicted = this.roundPredictions.get(playerName);
     if (got === predicted) {
       roundPoints += 5 + got;
+      if (this.players.get(playerName).correctCount === 4) {
+        roundPoints += this.options.bonusAmount;
+      }
     } else {
       roundPoints -= Math.abs(got - predicted);
+      if (this.players.get(playerName).correctCount === -4) {
+        roundPoints -= this.options.penaltyAmount;
+      }
     }
     this.roundPoints.set(playerName, roundPoints);
     return roundPoints;
@@ -163,23 +169,30 @@ export class GameDataService {
     }
   }
   getCorrectCountForPlayer(name) {
-    if (this.roundPoints.get(name) > 0) {
-      if (this.players.get(name).correctCount < 0) {
-        return 1;
+    if (this.roundOf !== 1) {
+      if (this.roundPoints.get(name) > 0) {
+        if (this.players.get(name).correctCount < 0) {
+          return 1;
+        } else {
+          return this.players.get(name).correctCount + 1;
+        }
       } else {
-        return this.players.get(name).correctCount + 1;
+        if (this.players.get(name).correctCount > 0) {
+          return -1;
+        } else {
+          return this.players.get(name).correctCount - 1;
+        }
       }
     } else {
-      if (this.players.get(name).correctCount > 0) {
-        return -1;
-      } else {
-        return this.players.get(name).correctCount - 1;
-      }
+      return this.players.get(name).correctCount;
     }
   }
   updateCorrectCounts() {
     for (const name of this.playerNames) {
       this.players.get(name).correctCount = this.getCorrectCountForPlayer(name);
+      if (this.players.get(name).correctCount === 5 || this.players.get(name).correctCount === -5) {
+        this.players.get(name).correctCount = 0;
+      }
     }
   }
   nextRound() {

@@ -17,6 +17,9 @@ export class RoundCardComponent implements OnInit {
   @Input() got: string;
   @Input() correctCount: string;
 
+  warnBonus = false;
+  warnPenalty = false;
+
   tableData: RoundResult[] = [
     { predicted: '', got: '', score: '', diff: '', correctCount: '', name: '' }
   ];
@@ -29,6 +32,8 @@ export class RoundCardComponent implements OnInit {
     this.tableData[0].predicted = this.predicted;
     this.tableData[0].score = this.score;
     this.tableData[0].correctCount = this.correctCount;
+    this.warnBonus = +this.correctCount === 4 || +this.correctCount === 5;
+    this.warnPenalty = +this.correctCount === -4 || +this.correctCount === -5;
     this.tableData[0].got = this.got;
     this.tableData[0].diff = +this.diff >= 0 ? '+' + this.diff : this.diff;
   }

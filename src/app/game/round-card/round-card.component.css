@@ -32,4 +32,6 @@ mat-card {
   text-align: center;
   padding-right: 0!important;
 }
-
+.bg-red {
+  background-color: red;
+}
