@@ -1,7 +1,26 @@
 <mat-card class="grid">
+  <div *ngIf="open">
     <div *ngFor="let btn of buttons; index as i" class="row">
       <div *ngFor="let rowbtn of buttons; index as j" class="col">
-        <button [disabled]='i*3+j>gameData.roundOf || disabledGuess === i*3+j' (click)='clicked.emit(i*3+j)' class="key-button" mat-stroked-button>{{i*3+j}}</button>
+        <button
+          [disabled]="
+            i * 3 + j > gameData.roundOf || disabledGuess === i * 3 + j
+          "
+          (click)="clicked.emit(i * 3 + j)"
+          class="key-button"
+          mat-stroked-button
+        >
+          {{ i * 3 + j }}
+        </button>
       </div>
     </div>
+  </div>
+  <div class="hide-grid">
+    <span *ngIf="open" (click)="open = false" class="material-icons">
+      expand_more
+    </span>
+    <span *ngIf="!open" (click)="open = true" class="material-icons">
+      expand_less
+    </span>
+  </div>
 </mat-card>

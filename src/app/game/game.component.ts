@@ -90,6 +90,12 @@ export class GameComponent implements OnInit {
     return this.gameData.roundOf === 1 || this.gameData.roundOf === 8 ? this.gameData.completedRoundsInRoundOf + 1 : undefined;
   }
 
+  checkAllFail() {
+    return this.gameData.checkAllFail();
+  }
 
+  restartRound() {
+    this.gameData.restartRound();
+  }
 
 }

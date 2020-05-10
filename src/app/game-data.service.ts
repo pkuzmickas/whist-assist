@@ -246,6 +246,23 @@ export class GameDataService {
     }
     return sum === this.roundOf;
   }
+  checkAllFail() {
+    for (const name of this.playerNames) {
+      if (this.roundPoints.get(name) > 0) {
+        return false;
+      }
+    }
+    return true;
+  }
+  restartRound() {
+    for (const name of this.playerNames) {
+      this.players.get(name).totalScore -= this.calculateScore(name);
+    }
+    this.currentStage = GameStages.GUESS_STAGE;
+    this.roundGots.clear();
+    this.roundPredictions.clear();
+    this.currentPlayerId = this.startingPlayerId;
+  }
 }
 
 export interface PlayerData {

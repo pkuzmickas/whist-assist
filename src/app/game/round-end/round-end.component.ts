@@ -11,6 +11,7 @@ export class RoundEndComponent implements OnInit {
 
   roundResults: Array<RoundResult> = [];
   invalid = false;
+  allFail = false;
 
   constructor(private gameData: GameDataService) { }
 
@@ -26,6 +27,7 @@ export class RoundEndComponent implements OnInit {
       });
     }
     this.invalid = !this.gameData.checkRoundValidity();
+    this.allFail = !this.invalid && this.gameData.checkAllFail();
   }
 
 }

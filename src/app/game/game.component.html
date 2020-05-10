@@ -5,7 +5,8 @@
       <app-round-end></app-round-end>
       <div class='buttoncont pt-4 pb-4'>
         <button (click)='previousStage()' class="continue" mat-raised-button color="accent">BACK</button>
-        <button [disabled]='!isRoundValid()' (click)='nextStage()' class="continue" mat-raised-button color="accent">CONTINUE</button>
+        <button *ngIf="!checkAllFail()" [disabled]='!isRoundValid()' (click)='nextStage()' class="continue" mat-raised-button color="accent">CONTINUE</button>
+        <button *ngIf="checkAllFail()" (click)='restartRound()' class="continue" mat-raised-button color="accent">RESTART ROUND</button>
       </div>
     </div>
     <div *ngSwitchCase="GameStages.FINAL_STAGE">

@@ -2,7 +2,7 @@
   <div class="container">
   <div class="row bot-buttons">
     <div class="col center pl-3">
-      <button mat-raised-button color="accent" class="setup-button" (click)="login.emit()">LOGIN</button>
+      <button disabled mat-raised-button color="accent" class="setup-button" (click)="login.emit()">LOGIN</button>
     </div>
     <div *ngIf="stage!=LandingStage.NAME_STAGE" class="col center">
       <button mat-raised-button class="setup-button" (click)="back.emit()">BACK</button>

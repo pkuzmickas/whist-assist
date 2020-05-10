@@ -14,6 +14,14 @@
       </mat-card>
     </div>
   </div>
+  <div *ngIf="allFail" class="row">
+    <div class="col">
+      <mat-card class="error-card">
+        <span>Everyone failed!<br>Restart the round.</span
+        >
+      </mat-card>
+    </div>
+  </div>
   <div class="row" *ngFor="let result of roundResults">
     <div class="col">
       <app-round-card

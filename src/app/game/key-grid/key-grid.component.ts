@@ -13,6 +13,8 @@ export class KeyGridComponent implements OnInit {
   @Input() disabledGuess: number;
   @Output() clicked = new EventEmitter<number>();
 
+  open = true;
+
   constructor(public gameData: GameDataService) { }
 
   ngOnInit() {
