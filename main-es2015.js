@@ -58,7 +58,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony default export */ __webpack_exports__["default"] = ("<app-navbar [title]='gameData.currentStage === GameStages.GAME_OVER ? \"GAME OVER\" : undefined' [roundNumber]=\"gameData.roundOf\" [roundNumber2]='getRoundNumber2()'></app-navbar>\n<div class=\"container\">\n  <div [ngSwitch]=\"gameData.currentStage\">\n    <div *ngSwitchCase=\"GameStages.ROUND_RESULT_STAGE\">\n      <app-round-end></app-round-end>\n      <div class='buttoncont pt-4 pb-4'>\n        <button (click)='previousStage()' class=\"continue\" mat-raised-button color=\"accent\">BACK</button>\n        <button [disabled]='!isRoundValid()' (click)='nextStage()' class=\"continue\" mat-raised-button color=\"accent\">CONTINUE</button>\n      </div>\n    </div>\n    <div *ngSwitchCase=\"GameStages.FINAL_STAGE\">\n      <app-leaderboard></app-leaderboard>\n      <div *ngIf=\"gameData.currentStage === GameStages.FINAL_STAGE\" class='buttoncont pt-4 container'>\n        <button (click)='gameData.nextRound()' class=\"continue\" mat-raised-button color=\"accent\">CONTINUE</button>\n      </div>\n    </div>\n    <div *ngSwitchCase=\"GameStages.GAME_OVER\">\n      <app-leaderboard title='FINAL SCORES'></app-leaderboard>\n      <div *ngIf=\"gameData.currentStage === GameStages.GAME_OVER\" class='buttoncont'>\n        <button (click)='newGame()' class=\"continue\" mat-raised-button color=\"accent\">NEW GAME</button>\n      </div>\n    </div>\n    <div *ngSwitchDefault>\n      <app-guesses></app-guesses>\n      <app-action (cardChanged)='invalidGuessKeyHandler()'></app-action>\n      <app-key-grid [disabledGuess]='invalidGuessKey' (clicked)='keyClicked($event)'></app-key-grid>\n    </div>\n  </div>\n</div>\n");
+/* harmony default export */ __webpack_exports__["default"] = ("<app-navbar [title]='gameData.currentStage === GameStages.GAME_OVER ? \"GAME OVER\" : undefined' [roundNumber]=\"gameData.roundOf\" [roundNumber2]='getRoundNumber2()'></app-navbar>\n<div class=\"container\">\n  <div [ngSwitch]=\"gameData.currentStage\">\n    <div *ngSwitchCase=\"GameStages.ROUND_RESULT_STAGE\">\n      <app-round-end></app-round-end>\n      <div class='buttoncont pt-4 pb-4'>\n        <button (click)='previousStage()' class=\"continue\" mat-raised-button color=\"accent\">BACK</button>\n        <button *ngIf=\"!checkAllFail()\" [disabled]='!isRoundValid()' (click)='nextStage()' class=\"continue\" mat-raised-button color=\"accent\">CONTINUE</button>\n        <button *ngIf=\"checkAllFail()\" (click)='restartRound()' class=\"continue\" mat-raised-button color=\"accent\">RESTART ROUND</button>\n      </div>\n    </div>\n    <div *ngSwitchCase=\"GameStages.FINAL_STAGE\">\n      <app-leaderboard></app-leaderboard>\n      <div *ngIf=\"gameData.currentStage === GameStages.FINAL_STAGE\" class='buttoncont pt-4 container'>\n        <button (click)='gameData.nextRound()' class=\"continue\" mat-raised-button color=\"accent\">CONTINUE</button>\n      </div>\n    </div>\n    <div *ngSwitchCase=\"GameStages.GAME_OVER\">\n      <app-leaderboard title='FINAL SCORES'></app-leaderboard>\n      <div *ngIf=\"gameData.currentStage === GameStages.GAME_OVER\" class='buttoncont'>\n        <button (click)='newGame()' class=\"continue\" mat-raised-button color=\"accent\">NEW GAME</button>\n      </div>\n    </div>\n    <div *ngSwitchDefault>\n      <app-guesses></app-guesses>\n      <app-action (cardChanged)='invalidGuessKeyHandler()'></app-action>\n      <app-key-grid [disabledGuess]='invalidGuessKey' (clicked)='keyClicked($event)'></app-key-grid>\n    </div>\n  </div>\n</div>\n");
 
 /***/ }),
 
@@ -84,7 +84,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony default export */ __webpack_exports__["default"] = ("<mat-card class=\"grid\">\n    <div *ngFor=\"let btn of buttons; index as i\" class=\"row\">\n      <div *ngFor=\"let rowbtn of buttons; index as j\" class=\"col\">\n        <button [disabled]='i*3+j>gameData.roundOf || disabledGuess === i*3+j' (click)='clicked.emit(i*3+j)' class=\"key-button\" mat-stroked-button>{{i*3+j}}</button>\n      </div>\n    </div>\n</mat-card>\n");
+/* harmony default export */ __webpack_exports__["default"] = ("<mat-card class=\"grid\">\n  <div *ngIf=\"open\">\n    <div *ngFor=\"let btn of buttons; index as i\" class=\"row\">\n      <div *ngFor=\"let rowbtn of buttons; index as j\" class=\"col\">\n        <button\n          [disabled]=\"\n            i * 3 + j > gameData.roundOf || disabledGuess === i * 3 + j\n          \"\n          (click)=\"clicked.emit(i * 3 + j)\"\n          class=\"key-button\"\n          mat-stroked-button\n        >\n          {{ i * 3 + j }}\n        </button>\n      </div>\n    </div>\n  </div>\n  <div class=\"hide-grid\">\n    <span *ngIf=\"open\" (click)=\"open = false\" class=\"material-icons\">\n      expand_more\n    </span>\n    <span *ngIf=\"!open\" (click)=\"open = true\" class=\"material-icons\">\n      expand_less\n    </span>\n  </div>\n</mat-card>\n");
 
 /***/ }),
 
@@ -110,7 +110,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony default export */ __webpack_exports__["default"] = ("<mat-toolbar color=\"primary\" class=\"nav-container\">\n  <div class=\"navigation\">\n    <button mat-mini-fab aria-label=\"menu\">\n      <mat-icon>menu</mat-icon>\n    </button>\n  </div>\n  <span class=\"round\">{{getTitle()}}</span>\n  <span class=\"rightside\"></span>\n</mat-toolbar>\n");
+/* harmony default export */ __webpack_exports__["default"] = ("<mat-toolbar color=\"primary\" class=\"nav-container\">\n  <div class=\"navigation\">\n    <button disabled mat-mini-fab aria-label=\"menu\">\n      <mat-icon>menu</mat-icon>\n    </button>\n  </div>\n  <span class=\"round\">{{getTitle()}}</span>\n  <span class=\"rightside\"></span>\n</mat-toolbar>\n");
 
 /***/ }),
 
@@ -123,7 +123,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony default export */ __webpack_exports__["default"] = ("<mat-card>\n  <div class=\"row\">\n    <div class=\"col text-center\">\n      <span class=\"name\">{{playerName}}</span>\n    </div>\n  </div>\n  <div class=\"row\">\n    <table mat-table [dataSource]=\"dataSource\">\n      <ng-container matColumnDef=\"predicted\">\n        <th mat-header-cell *matHeaderCellDef>Predicted</th>\n        <td mat-cell *matCellDef=\"let element\">{{ element.predicted }}</td>\n      </ng-container>\n\n      <ng-container matColumnDef=\"got\">\n        <th mat-header-cell *matHeaderCellDef>Got</th>\n        <td mat-cell *matCellDef=\"let element\">{{ element.got }}</td>\n      </ng-container>\n\n      <ng-container matColumnDef=\"score\">\n        <th mat-header-cell *matHeaderCellDef>Score</th>\n        <td mat-cell *matCellDef=\"let element\">{{ element.score }} ({{element.diff}})</td>\n      </ng-container>\n\n      <ng-container matColumnDef=\"correctCount\">\n        <th mat-header-cell *matHeaderCellDef>Correct Count</th>\n        <td mat-cell *matCellDef=\"let element\">{{ element.correctCount }}</td>\n      </ng-container>\n\n      <tr mat-header-row *matHeaderRowDef=\"columns\"></tr>\n      <tr mat-row *matRowDef=\"let row; columns: columns\"></tr>\n    </table>\n  </div>\n\n</mat-card>\n");
+/* harmony default export */ __webpack_exports__["default"] = ("<mat-card>\n  <div class=\"row\">\n    <div class=\"col text-center\">\n      <span class=\"name\">{{playerName}}</span>\n    </div>\n  </div>\n  <div class=\"row\">\n    <table mat-table [dataSource]=\"dataSource\">\n      <ng-container matColumnDef=\"predicted\">\n        <th mat-header-cell *matHeaderCellDef>Predicted</th>\n        <td mat-cell *matCellDef=\"let element\">{{ element.predicted }}</td>\n      </ng-container>\n\n      <ng-container matColumnDef=\"got\">\n        <th mat-header-cell *matHeaderCellDef>Got</th>\n        <td mat-cell *matCellDef=\"let element\">{{ element.got }}</td>\n      </ng-container>\n\n      <ng-container matColumnDef=\"score\">\n        <th mat-header-cell *matHeaderCellDef>Score</th>\n        <td mat-cell *matCellDef=\"let element\">{{ element.score }} ({{element.diff}})</td>\n      </ng-container>\n\n      <ng-container matColumnDef=\"correctCount\">\n        <th mat-header-cell *matHeaderCellDef>Correct Count</th>\n        <td [class.bg-red]='warnPenalty' [class.primary-color-bg]='warnBonus' mat-cell *matCellDef=\"let element\">{{ element.correctCount }}</td>\n      </ng-container>\n\n      <tr mat-header-row *matHeaderRowDef=\"columns\"></tr>\n      <tr mat-row *matRowDef=\"let row; columns: columns\"></tr>\n    </table>\n  </div>\n\n</mat-card>\n");
 
 /***/ }),
 
@@ -136,7 +136,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony default export */ __webpack_exports__["default"] = ("<div class=\"container\">\n  <div class=\"row\">\n    <div class=\"col text-center\">\n      <mat-card>\n        <span class=\"title\">Round Results</span>\n      </mat-card>\n    </div>\n  </div>\n  <div *ngIf=\"invalid\" class=\"row\">\n    <div class=\"col\">\n      <mat-card class=\"error-card\">\n        <span>Incorrect scores, someone lied!<br>Find the pizma.</span\n        >\n      </mat-card>\n    </div>\n  </div>\n  <div class=\"row\" *ngFor=\"let result of roundResults\">\n    <div class=\"col\">\n      <app-round-card\n        [playerName]=\"result.name\"\n        [predicted]=\"result.predicted\"\n        [got]=\"result.got\"\n        [score]=\"result.score\"\n        [diff]=\"result.diff\"\n        [correctCount]=\"result.correctCount\"\n      ></app-round-card>\n    </div>\n  </div>\n</div>\n");
+/* harmony default export */ __webpack_exports__["default"] = ("<div class=\"container\">\n  <div class=\"row\">\n    <div class=\"col text-center\">\n      <mat-card>\n        <span class=\"title\">Round Results</span>\n      </mat-card>\n    </div>\n  </div>\n  <div *ngIf=\"invalid\" class=\"row\">\n    <div class=\"col\">\n      <mat-card class=\"error-card\">\n        <span>Incorrect scores, someone lied!<br>Find the pizma.</span\n        >\n      </mat-card>\n    </div>\n  </div>\n  <div *ngIf=\"allFail\" class=\"row\">\n    <div class=\"col\">\n      <mat-card class=\"error-card\">\n        <span>Everyone failed!<br>Restart the round.</span\n        >\n      </mat-card>\n    </div>\n  </div>\n  <div class=\"row\" *ngFor=\"let result of roundResults\">\n    <div class=\"col\">\n      <app-round-card\n        [playerName]=\"result.name\"\n        [predicted]=\"result.predicted\"\n        [got]=\"result.got\"\n        [score]=\"result.score\"\n        [diff]=\"result.diff\"\n        [correctCount]=\"result.correctCount\"\n      ></app-round-card>\n    </div>\n  </div>\n</div>\n");
 
 /***/ }),
 
@@ -162,7 +162,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony default export */ __webpack_exports__["default"] = ("<div class=\"bottom\">\n  <div class=\"container\">\n  <div class=\"row bot-buttons\">\n    <div class=\"col center pl-3\">\n      <button mat-raised-button color=\"accent\" class=\"setup-button\" (click)=\"login.emit()\">LOGIN</button>\n    </div>\n    <div *ngIf=\"stage!=LandingStage.NAME_STAGE\" class=\"col center\">\n      <button mat-raised-button class=\"setup-button\" (click)=\"back.emit()\">BACK</button>\n    </div>\n    <div *ngIf=\"stage!=LandingStage.OPTIONS_STAGE\" class=\"col center pr-3\">\n      <button mat-raised-button color=\"primary\" [disabled]=\"!stageValid\" class=\"setup-button\" (click)=\"continue.emit()\">CONTINUE</button>\n    </div>\n    <div *ngIf=\"stage==LandingStage.OPTIONS_STAGE\" class=\"col center pr-3\">\n      <button routerLink=\"/play\" mat-raised-button color=\"primary\" [disabled]=\"!stageValid\" class=\"setup-button\" (click)=\"startGame.emit()\">START GAME</button>\n    </div>\n  </div>\n</div>\n</div>\n");
+/* harmony default export */ __webpack_exports__["default"] = ("<div class=\"bottom\">\n  <div class=\"container\">\n  <div class=\"row bot-buttons\">\n    <div class=\"col center pl-3\">\n      <button disabled mat-raised-button color=\"accent\" class=\"setup-button\" (click)=\"login.emit()\">LOGIN</button>\n    </div>\n    <div *ngIf=\"stage!=LandingStage.NAME_STAGE\" class=\"col center\">\n      <button mat-raised-button class=\"setup-button\" (click)=\"back.emit()\">BACK</button>\n    </div>\n    <div *ngIf=\"stage!=LandingStage.OPTIONS_STAGE\" class=\"col center pr-3\">\n      <button mat-raised-button color=\"primary\" [disabled]=\"!stageValid\" class=\"setup-button\" (click)=\"continue.emit()\">CONTINUE</button>\n    </div>\n    <div *ngIf=\"stage==LandingStage.OPTIONS_STAGE\" class=\"col center pr-3\">\n      <button routerLink=\"/play\" mat-raised-button color=\"primary\" [disabled]=\"!stageValid\" class=\"setup-button\" (click)=\"startGame.emit()\">START GAME</button>\n    </div>\n  </div>\n</div>\n</div>\n");
 
 /***/ }),
 
@@ -175,7 +175,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony default export */ __webpack_exports__["default"] = ("<app-top [text]=\"getTopTitle()\"></app-top>\n<div class=\"background\">\n  <div class=\"container\">\n    <div class=\"top-padding\"></div>\n    <div [ngSwitch]=\"currentStage\">\n      <app-names\n        *ngSwitchCase=\"LandingStage.NAME_STAGE\"\n        (isValid)=\"onValidityChange($event)\"\n        [namesList]=\"pregameInfo.names\"\n      ></app-names>\n      <app-options [style]='pregameInfo.style' [bonus]='pregameInfo.bonus' [penalty]='pregameInfo.penalty' *ngSwitchCase=\"LandingStage.OPTIONS_STAGE\"></app-options>\n    </div>\n    <div class=\"bottom-padding\"></div>\n  </div>\n</div>\n<app-bottom\n  (back)=\"handleBack()\"\n  (login)=\"handleLogin()\"\n  (continue)=\"handleContinue()\"\n  (startGame)=\"handleStart()\"\n  [stage]=\"currentStage\"\n  [stageValid]=\"isStageValid\"\n></app-bottom>\n");
+/* harmony default export */ __webpack_exports__["default"] = ("<app-top *ngIf=\"showingTop\" [text]=\"getTopTitle()\"></app-top>\n<div class=\"background\">\n  <div class=\"container\">\n    <div class=\"top-padding\"></div>\n    <div [ngSwitch]=\"currentStage\">\n      <app-names\n        *ngSwitchCase=\"LandingStage.NAME_STAGE\"\n        (isValid)=\"onValidityChange($event)\"\n        [namesList]=\"pregameInfo.names\"\n        (inputFocus)='nameInputFocused($event)'\n      ></app-names>\n      <app-options [style]='pregameInfo.style' [bonus]='pregameInfo.bonus' [penalty]='pregameInfo.penalty' *ngSwitchCase=\"LandingStage.OPTIONS_STAGE\"></app-options>\n    </div>\n    <div class=\"bottom-padding\"></div>\n  </div>\n</div>\n<app-bottom\n  (back)=\"handleBack()\"\n  (login)=\"handleLogin()\"\n  (continue)=\"handleContinue()\"\n  (startGame)=\"handleStart()\"\n  [stage]=\"currentStage\"\n  [stageValid]=\"isStageValid\"\n></app-bottom>\n");
 
 /***/ }),
 
@@ -188,7 +188,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony default export */ __webpack_exports__["default"] = ("<mat-card>\n  <div class=\"row\" *ngFor=\"let name of playerNames.controls; index as i\">\n    <div class=\"col center\">\n      <mat-form-field appearance=\"outline\" color=\"accent\">\n        <mat-label>Player Name</mat-label>\n        <input matInput [formControl]=\"playerNames.controls[i]\" />\n      </mat-form-field>\n      <span\n        class=\"remover\"\n        *ngIf=\"i >= MINIMUM_PLAYERS\"\n        (click)=\"removePlayer(i)\"\n        ><i class=\"material-icons\">highlight_off</i>\n      </span>\n    </div>\n  </div>\n  <div class=\"row lastname\" #lastel *ngIf=\"!isMaxPlayersReached()\">\n    <div class=\"col center\">\n      <mat-form-field\n        appearance=\"outline\"\n        color=\"accent\"\n        (click)=\"addPlayerName()\"\n      >\n        <mat-label>+ Add Another Player</mat-label>\n        <input matInput disabled />\n      </mat-form-field>\n    </div>\n  </div>\n</mat-card>\n");
+/* harmony default export */ __webpack_exports__["default"] = ("<mat-card>\n  <div class=\"row\" *ngFor=\"let name of playerNames.controls; index as i\">\n    <div class=\"col center\">\n      <mat-form-field appearance=\"outline\" color=\"accent\">\n        <mat-label>Player Name</mat-label>\n        <input (focus)='inputFocused()' (blur)='inputBlurred()' matInput [formControl]=\"playerNames.controls[i]\" />\n      </mat-form-field>\n      <span\n        class=\"remover\"\n        *ngIf=\"i >= MINIMUM_PLAYERS\"\n        (click)=\"removePlayer(i)\"\n        ><i class=\"material-icons\">highlight_off</i>\n      </span>\n    </div>\n  </div>\n  <div class=\"row lastname\" #lastel *ngIf=\"!isMaxPlayersReached()\">\n    <div class=\"col center\">\n      <mat-form-field\n        appearance=\"outline\"\n        color=\"accent\"\n        (click)=\"addPlayerName()\"\n      >\n        <mat-label>+ Add Another Player</mat-label>\n        <input matInput disabled />\n      </mat-form-field>\n    </div>\n  </div>\n</mat-card>\n");
 
 /***/ }),
 
@@ -729,11 +729,20 @@ let GameDataService = class GameDataService {
         this.loopDone = false;
     }
     addPlayers(names) {
+        const nameDuplicates = new Map();
         for (const name of names) {
-            this.playerNames.push(name);
-            this.players.set(name, {
+            let nameToPut = name;
+            if (nameDuplicates.has(name)) {
+                let count = nameDuplicates.get(name);
+                nameToPut += ' ' + (++count).toString();
+                nameDuplicates.set(name, count);
+            }
+            else {
+                nameDuplicates.set(name, 1);
+            }
+            this.playerNames.push(nameToPut);
+            this.players.set(nameToPut, {
                 totalScore: 0,
-                mistakeCount: 0,
                 correctCount: 0
             });
         }
@@ -822,9 +831,15 @@ let GameDataService = class GameDataService {
         const predicted = this.roundPredictions.get(playerName);
         if (got === predicted) {
             roundPoints += 5 + got;
+            if (this.players.get(playerName).correctCount === 4) {
+                roundPoints += this.options.bonusAmount;
+            }
         }
         else {
             roundPoints -= Math.abs(got - predicted);
+            if (this.players.get(playerName).correctCount === -4) {
+                roundPoints -= this.options.penaltyAmount;
+            }
         }
         this.roundPoints.set(playerName, roundPoints);
         return roundPoints;
@@ -866,12 +881,43 @@ let GameDataService = class GameDataService {
             this.playerNames[i + 1] = temp;
         }
     }
+    getCorrectCountForPlayer(name) {
+        if (this.roundOf !== 1) {
+            if (this.roundPoints.get(name) > 0) {
+                if (this.players.get(name).correctCount < 0) {
+                    return 1;
+                }
+                else {
+                    return this.players.get(name).correctCount + 1;
+                }
+            }
+            else {
+                if (this.players.get(name).correctCount > 0) {
+                    return -1;
+                }
+                else {
+                    return this.players.get(name).correctCount - 1;
+                }
+            }
+        }
+        else {
+            return this.players.get(name).correctCount;
+        }
+    }
+    updateCorrectCounts() {
+        for (const name of this.playerNames) {
+            this.players.get(name).correctCount = this.getCorrectCountForPlayer(name);
+            if (this.players.get(name).correctCount === 5 || this.players.get(name).correctCount === -5) {
+                this.players.get(name).correctCount = 0;
+            }
+        }
+    }
     nextRound() {
+        this.updateCorrectCounts();
         this.currentStage = _GameStages__WEBPACK_IMPORTED_MODULE_2__["GameStages"].GUESS_STAGE;
         this.roundGots.clear();
         this.roundPredictions.clear();
         this.resortArray();
-        // this.startingPlayerId = (this.startingPlayerId + 1) % this.playerNames.length;
         this.currentPlayerId = this.startingPlayerId;
         let addingRound = true;
         if (this.roundOf === 1 || this.roundOf === 8) {
@@ -917,6 +963,23 @@ let GameDataService = class GameDataService {
             sum += got;
         }
         return sum === this.roundOf;
+    }
+    checkAllFail() {
+        for (const name of this.playerNames) {
+            if (this.roundPoints.get(name) > 0) {
+                return false;
+            }
+        }
+        return true;
+    }
+    restartRound() {
+        for (const name of this.playerNames) {
+            this.players.get(name).totalScore -= this.calculateScore(name);
+        }
+        this.currentStage = _GameStages__WEBPACK_IMPORTED_MODULE_2__["GameStages"].GUESS_STAGE;
+        this.roundGots.clear();
+        this.roundPredictions.clear();
+        this.currentPlayerId = this.startingPlayerId;
     }
 };
 GameDataService = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
@@ -1149,6 +1212,12 @@ let GameComponent = class GameComponent {
     getRoundNumber2() {
         return this.gameData.roundOf === 1 || this.gameData.roundOf === 8 ? this.gameData.completedRoundsInRoundOf + 1 : undefined;
     }
+    checkAllFail() {
+        return this.gameData.checkAllFail();
+    }
+    restartRound() {
+        this.gameData.restartRound();
+    }
 };
 GameComponent.ctorParameters = () => [
     { type: _game_data_service__WEBPACK_IMPORTED_MODULE_4__["GameDataService"] },
@@ -1267,7 +1336,7 @@ GuessesComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony default export */ __webpack_exports__["default"] = (".grid {\n  position: absolute;\n  bottom: 1vh;\n  left: 19vw;\n  right: 19vw;\n  padding-top: 5px;\n  padding-bottom: 5px;\n}\n\n.key-button {\n  font-size: 2em;\n  min-width: 20vw !important;\n  min-height: 10vh !important;\n}\n\n.col {\n  padding: 0;\n}\n\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInNyYy9hcHAvZ2FtZS9rZXktZ3JpZC9rZXktZ3JpZC5jb21wb25lbnQuY3NzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBO0VBQ0Usa0JBQWtCO0VBQ2xCLFdBQVc7RUFDWCxVQUFVO0VBQ1YsV0FBVztFQUNYLGdCQUFnQjtFQUNoQixtQkFBbUI7QUFDckI7O0FBRUE7RUFDRSxjQUFjO0VBQ2QsMEJBQTBCO0VBQzFCLDJCQUEyQjtBQUM3Qjs7QUFDQTtFQUNFLFVBQVU7QUFDWiIsImZpbGUiOiJzcmMvYXBwL2dhbWUva2V5LWdyaWQva2V5LWdyaWQuY29tcG9uZW50LmNzcyIsInNvdXJjZXNDb250ZW50IjpbIi5ncmlkIHtcbiAgcG9zaXRpb246IGFic29sdXRlO1xuICBib3R0b206IDF2aDtcbiAgbGVmdDogMTl2dztcbiAgcmlnaHQ6IDE5dnc7XG4gIHBhZGRpbmctdG9wOiA1cHg7XG4gIHBhZGRpbmctYm90dG9tOiA1cHg7XG59XG5cbi5rZXktYnV0dG9uIHtcbiAgZm9udC1zaXplOiAyZW07XG4gIG1pbi13aWR0aDogMjB2dyAhaW1wb3J0YW50O1xuICBtaW4taGVpZ2h0OiAxMHZoICFpbXBvcnRhbnQ7XG59XG4uY29sIHtcbiAgcGFkZGluZzogMDtcbn1cbiJdfQ== */");
+/* harmony default export */ __webpack_exports__["default"] = (".grid {\n  position: absolute;\n  bottom: 0;\n  left: 19vw;\n  right: 19vw;\n  padding-top: 5px;\n  padding-bottom: 5px;\n}\n\n.key-button {\n  font-size: 2em;\n  min-width: 20vw !important;\n  min-height: 10vh !important;\n}\n\n.col {\n  padding: 0;\n}\n\n.hide-grid {\n  position: absolute;\n  bottom: 0;\n  right: -3.5em;\n}\n\n.material-icons {\n  font-size: 3em;\n}\n\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInNyYy9hcHAvZ2FtZS9rZXktZ3JpZC9rZXktZ3JpZC5jb21wb25lbnQuY3NzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBO0VBQ0Usa0JBQWtCO0VBQ2xCLFNBQVM7RUFDVCxVQUFVO0VBQ1YsV0FBVztFQUNYLGdCQUFnQjtFQUNoQixtQkFBbUI7QUFDckI7O0FBRUE7RUFDRSxjQUFjO0VBQ2QsMEJBQTBCO0VBQzFCLDJCQUEyQjtBQUM3Qjs7QUFDQTtFQUNFLFVBQVU7QUFDWjs7QUFDQTtFQUNFLGtCQUFrQjtFQUNsQixTQUFTO0VBQ1QsYUFBYTtBQUNmOztBQUNBO0VBQ0UsY0FBYztBQUNoQiIsImZpbGUiOiJzcmMvYXBwL2dhbWUva2V5LWdyaWQva2V5LWdyaWQuY29tcG9uZW50LmNzcyIsInNvdXJjZXNDb250ZW50IjpbIi5ncmlkIHtcbiAgcG9zaXRpb246IGFic29sdXRlO1xuICBib3R0b206IDA7XG4gIGxlZnQ6IDE5dnc7XG4gIHJpZ2h0OiAxOXZ3O1xuICBwYWRkaW5nLXRvcDogNXB4O1xuICBwYWRkaW5nLWJvdHRvbTogNXB4O1xufVxuXG4ua2V5LWJ1dHRvbiB7XG4gIGZvbnQtc2l6ZTogMmVtO1xuICBtaW4td2lkdGg6IDIwdncgIWltcG9ydGFudDtcbiAgbWluLWhlaWdodDogMTB2aCAhaW1wb3J0YW50O1xufVxuLmNvbCB7XG4gIHBhZGRpbmc6IDA7XG59XG4uaGlkZS1ncmlkIHtcbiAgcG9zaXRpb246IGFic29sdXRlO1xuICBib3R0b206IDA7XG4gIHJpZ2h0OiAtMy41ZW07XG59XG4ubWF0ZXJpYWwtaWNvbnMge1xuICBmb250LXNpemU6IDNlbTtcbn1cbiJdfQ== */");
 
 /***/ }),
 
@@ -1292,6 +1361,7 @@ let KeyGridComponent = class KeyGridComponent {
         this.gameData = gameData;
         this.buttons = new Array(3);
         this.clicked = new _angular_core__WEBPACK_IMPORTED_MODULE_1__["EventEmitter"]();
+        this.open = true;
     }
     ngOnInit() {
     }
@@ -1450,7 +1520,7 @@ NavbarComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony default export */ __webpack_exports__["default"] = ("table {\n  width: 100%;\n  table-layout: fixed;\n\n}\nmat-card {\n  margin-top: 10px;\n}\n.name {\n  font-size: 1.3em;\n}\n.mat-column-predicted {\n  text-align: center;\n  border-right-width: 1px;\n  border-right-style: solid;\n  border-right-color: rgba(0,0,0,0.12);\n  padding-left: 0!important;\n}\n.mat-column-got {\n  text-align: center;\n  border-right-width: 1px;\n  border-right-style: solid;\n  border-right-color: rgba(0,0,0,0.12);\n}\n.mat-column-score {\n  text-align: center;\n  border-right-width: 1px;\n  border-right-style: solid;\n  border-right-color: rgba(0,0,0,0.12);\n}\n.mat-column-correctCount {\n  text-align: center;\n  padding-right: 0!important;\n}\n\n\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInNyYy9hcHAvZ2FtZS9yb3VuZC1jYXJkL3JvdW5kLWNhcmQuY29tcG9uZW50LmNzcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQTtFQUNFLFdBQVc7RUFDWCxtQkFBbUI7O0FBRXJCO0FBQ0E7RUFDRSxnQkFBZ0I7QUFDbEI7QUFDQTtFQUNFLGdCQUFnQjtBQUNsQjtBQUNBO0VBQ0Usa0JBQWtCO0VBQ2xCLHVCQUF1QjtFQUN2Qix5QkFBeUI7RUFDekIsb0NBQW9DO0VBQ3BDLHlCQUF5QjtBQUMzQjtBQUNBO0VBQ0Usa0JBQWtCO0VBQ2xCLHVCQUF1QjtFQUN2Qix5QkFBeUI7RUFDekIsb0NBQW9DO0FBQ3RDO0FBQ0E7RUFDRSxrQkFBa0I7RUFDbEIsdUJBQXVCO0VBQ3ZCLHlCQUF5QjtFQUN6QixvQ0FBb0M7QUFDdEM7QUFDQTtFQUNFLGtCQUFrQjtFQUNsQiwwQkFBMEI7QUFDNUIiLCJmaWxlIjoic3JjL2FwcC9nYW1lL3JvdW5kLWNhcmQvcm91bmQtY2FyZC5jb21wb25lbnQuY3NzIiwic291cmNlc0NvbnRlbnQiOlsidGFibGUge1xuICB3aWR0aDogMTAwJTtcbiAgdGFibGUtbGF5b3V0OiBmaXhlZDtcblxufVxubWF0LWNhcmQge1xuICBtYXJnaW4tdG9wOiAxMHB4O1xufVxuLm5hbWUge1xuICBmb250LXNpemU6IDEuM2VtO1xufVxuLm1hdC1jb2x1bW4tcHJlZGljdGVkIHtcbiAgdGV4dC1hbGlnbjogY2VudGVyO1xuICBib3JkZXItcmlnaHQtd2lkdGg6IDFweDtcbiAgYm9yZGVyLXJpZ2h0LXN0eWxlOiBzb2xpZDtcbiAgYm9yZGVyLXJpZ2h0LWNvbG9yOiByZ2JhKDAsMCwwLDAuMTIpO1xuICBwYWRkaW5nLWxlZnQ6IDAhaW1wb3J0YW50O1xufVxuLm1hdC1jb2x1bW4tZ290IHtcbiAgdGV4dC1hbGlnbjogY2VudGVyO1xuICBib3JkZXItcmlnaHQtd2lkdGg6IDFweDtcbiAgYm9yZGVyLXJpZ2h0LXN0eWxlOiBzb2xpZDtcbiAgYm9yZGVyLXJpZ2h0LWNvbG9yOiByZ2JhKDAsMCwwLDAuMTIpO1xufVxuLm1hdC1jb2x1bW4tc2NvcmUge1xuICB0ZXh0LWFsaWduOiBjZW50ZXI7XG4gIGJvcmRlci1yaWdodC13aWR0aDogMXB4O1xuICBib3JkZXItcmlnaHQtc3R5bGU6IHNvbGlkO1xuICBib3JkZXItcmlnaHQtY29sb3I6IHJnYmEoMCwwLDAsMC4xMik7XG59XG4ubWF0LWNvbHVtbi1jb3JyZWN0Q291bnQge1xuICB0ZXh0LWFsaWduOiBjZW50ZXI7XG4gIHBhZGRpbmctcmlnaHQ6IDAhaW1wb3J0YW50O1xufVxuXG4iXX0= */");
+/* harmony default export */ __webpack_exports__["default"] = ("table {\n  width: 100%;\n  table-layout: fixed;\n\n}\nmat-card {\n  margin-top: 10px;\n}\n.name {\n  font-size: 1.3em;\n}\n.mat-column-predicted {\n  text-align: center;\n  border-right-width: 1px;\n  border-right-style: solid;\n  border-right-color: rgba(0,0,0,0.12);\n  padding-left: 0!important;\n}\n.mat-column-got {\n  text-align: center;\n  border-right-width: 1px;\n  border-right-style: solid;\n  border-right-color: rgba(0,0,0,0.12);\n}\n.mat-column-score {\n  text-align: center;\n  border-right-width: 1px;\n  border-right-style: solid;\n  border-right-color: rgba(0,0,0,0.12);\n}\n.mat-column-correctCount {\n  text-align: center;\n  padding-right: 0!important;\n}\n.bg-red {\n  background-color: red;\n}\n\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInNyYy9hcHAvZ2FtZS9yb3VuZC1jYXJkL3JvdW5kLWNhcmQuY29tcG9uZW50LmNzcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQTtFQUNFLFdBQVc7RUFDWCxtQkFBbUI7O0FBRXJCO0FBQ0E7RUFDRSxnQkFBZ0I7QUFDbEI7QUFDQTtFQUNFLGdCQUFnQjtBQUNsQjtBQUNBO0VBQ0Usa0JBQWtCO0VBQ2xCLHVCQUF1QjtFQUN2Qix5QkFBeUI7RUFDekIsb0NBQW9DO0VBQ3BDLHlCQUF5QjtBQUMzQjtBQUNBO0VBQ0Usa0JBQWtCO0VBQ2xCLHVCQUF1QjtFQUN2Qix5QkFBeUI7RUFDekIsb0NBQW9DO0FBQ3RDO0FBQ0E7RUFDRSxrQkFBa0I7RUFDbEIsdUJBQXVCO0VBQ3ZCLHlCQUF5QjtFQUN6QixvQ0FBb0M7QUFDdEM7QUFDQTtFQUNFLGtCQUFrQjtFQUNsQiwwQkFBMEI7QUFDNUI7QUFDQTtFQUNFLHFCQUFxQjtBQUN2QiIsImZpbGUiOiJzcmMvYXBwL2dhbWUvcm91bmQtY2FyZC9yb3VuZC1jYXJkLmNvbXBvbmVudC5jc3MiLCJzb3VyY2VzQ29udGVudCI6WyJ0YWJsZSB7XG4gIHdpZHRoOiAxMDAlO1xuICB0YWJsZS1sYXlvdXQ6IGZpeGVkO1xuXG59XG5tYXQtY2FyZCB7XG4gIG1hcmdpbi10b3A6IDEwcHg7XG59XG4ubmFtZSB7XG4gIGZvbnQtc2l6ZTogMS4zZW07XG59XG4ubWF0LWNvbHVtbi1wcmVkaWN0ZWQge1xuICB0ZXh0LWFsaWduOiBjZW50ZXI7XG4gIGJvcmRlci1yaWdodC13aWR0aDogMXB4O1xuICBib3JkZXItcmlnaHQtc3R5bGU6IHNvbGlkO1xuICBib3JkZXItcmlnaHQtY29sb3I6IHJnYmEoMCwwLDAsMC4xMik7XG4gIHBhZGRpbmctbGVmdDogMCFpbXBvcnRhbnQ7XG59XG4ubWF0LWNvbHVtbi1nb3Qge1xuICB0ZXh0LWFsaWduOiBjZW50ZXI7XG4gIGJvcmRlci1yaWdodC13aWR0aDogMXB4O1xuICBib3JkZXItcmlnaHQtc3R5bGU6IHNvbGlkO1xuICBib3JkZXItcmlnaHQtY29sb3I6IHJnYmEoMCwwLDAsMC4xMik7XG59XG4ubWF0LWNvbHVtbi1zY29yZSB7XG4gIHRleHQtYWxpZ246IGNlbnRlcjtcbiAgYm9yZGVyLXJpZ2h0LXdpZHRoOiAxcHg7XG4gIGJvcmRlci1yaWdodC1zdHlsZTogc29saWQ7XG4gIGJvcmRlci1yaWdodC1jb2xvcjogcmdiYSgwLDAsMCwwLjEyKTtcbn1cbi5tYXQtY29sdW1uLWNvcnJlY3RDb3VudCB7XG4gIHRleHQtYWxpZ246IGNlbnRlcjtcbiAgcGFkZGluZy1yaWdodDogMCFpbXBvcnRhbnQ7XG59XG4uYmctcmVkIHtcbiAgYmFja2dyb3VuZC1jb2xvcjogcmVkO1xufVxuIl19 */");
 
 /***/ }),
 
@@ -1472,6 +1542,8 @@ __webpack_require__.r(__webpack_exports__);
 
 let RoundCardComponent = class RoundCardComponent {
     constructor() {
+        this.warnBonus = false;
+        this.warnPenalty = false;
         this.tableData = [
             { predicted: '', got: '', score: '', diff: '', correctCount: '', name: '' }
         ];
@@ -1482,6 +1554,8 @@ let RoundCardComponent = class RoundCardComponent {
         this.tableData[0].predicted = this.predicted;
         this.tableData[0].score = this.score;
         this.tableData[0].correctCount = this.correctCount;
+        this.warnBonus = +this.correctCount === 4 || +this.correctCount === 5;
+        this.warnPenalty = +this.correctCount === -4 || +this.correctCount === -5;
         this.tableData[0].got = this.got;
         this.tableData[0].diff = +this.diff >= 0 ? '+' + this.diff : this.diff;
     }
@@ -1550,6 +1624,7 @@ let RoundEndComponent = class RoundEndComponent {
         this.gameData = gameData;
         this.roundResults = [];
         this.invalid = false;
+        this.allFail = false;
     }
     ngOnInit() {
         for (const name of this.gameData.playerNames) {
@@ -1558,11 +1633,12 @@ let RoundEndComponent = class RoundEndComponent {
                 predicted: this.gameData.roundPredictions.get(name).toString(),
                 got: this.gameData.roundGots.get(name).toString(),
                 score: this.gameData.players.get(name).totalScore.toString(),
-                correctCount: this.gameData.players.get(name).correctCount.toString(),
+                correctCount: this.gameData.getCorrectCountForPlayer(name).toString(),
                 diff: this.gameData.roundPoints.get(name).toString()
             });
         }
         this.invalid = !this.gameData.checkRoundValidity();
+        this.allFail = !this.invalid && this.gameData.checkAllFail();
     }
 };
 RoundEndComponent.ctorParameters = () => [
@@ -1812,6 +1888,9 @@ let LandingComponent = class LandingComponent {
     constructor(gameData) {
         this.gameData = gameData;
         this.LandingStage = _LandingEnum__WEBPACK_IMPORTED_MODULE_2__["LandingStage"]; // For HTML to recognise the enum
+        this.screenWidth = window.screen.width;
+        this.computerWidthAssumption = 1000;
+        this.showingTop = true;
         this.pregameInfo = {
             names: [],
             style: '181',
@@ -1854,6 +1933,13 @@ let LandingComponent = class LandingComponent {
         };
         this.gameData.addPlayers(this.pregameInfo.names);
         this.gameData.initGame();
+    }
+    nameInputFocused(focused) {
+        console.log(focused);
+        if (this.screenWidth < this.computerWidthAssumption) {
+            this.showingTop = !focused;
+            console.log(this.showingTop);
+        }
     }
 };
 LandingComponent.ctorParameters = () => [
@@ -1912,11 +1998,19 @@ let NamesComponent = class NamesComponent {
         this.MINIMUM_PLAYERS = 3;
         this.MAXIMUM_PLAYERS = 6;
         this.full = false;
+        this.inputFocus = new _angular_core__WEBPACK_IMPORTED_MODULE_1__["EventEmitter"]();
         this.isValid = new _angular_core__WEBPACK_IMPORTED_MODULE_1__["EventEmitter"]();
+        this.showTop = true;
         this.playerNames = new _angular_forms__WEBPACK_IMPORTED_MODULE_2__["FormArray"]([], [_angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].maxLength(this.MAXIMUM_PLAYERS)]);
     }
     ngOnDestroy() {
         this.validSub.unsubscribe();
+    }
+    inputFocused() {
+        this.inputFocus.emit(true);
+    }
+    inputBlurred() {
+        this.inputFocus.emit(false);
     }
     ngOnInit() {
         if (this.namesList !== undefined && this.namesList.length !== 0) {
@@ -1948,6 +2042,9 @@ let NamesComponent = class NamesComponent {
         return namesList;
     }
 };
+tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+    Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Output"])()
+], NamesComponent.prototype, "inputFocus", void 0);
 tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
     Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Output"])()
 ], NamesComponent.prototype, "isValid", void 0);
@@ -2054,7 +2151,7 @@ __webpack_require__.r(__webpack_exports__);
 
 let OptionsComponent = class OptionsComponent {
     constructor() {
-        this.bonusOptions = ['5', '10'];
+        this.bonusOptions = ['0', '5', '10'];
         this.penaltyOptions = ['0', '5', '10'];
         this.styleOptions = ['181', '818'];
     }
