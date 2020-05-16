@@ -14,8 +14,11 @@ export class NamesComponent implements OnInit, OnDestroy {
   readonly MAXIMUM_PLAYERS = 6;
   full = false;
   validSub: Subscription;
+  @Output() inputFocus = new EventEmitter<boolean>();
   @Output() isValid = new EventEmitter<boolean>();
   @Input() namesList: Array<string>;
+
+  showTop = true;
 
   constructor() {
     this.playerNames = new FormArray([], [Validators.maxLength(this.MAXIMUM_PLAYERS)]);
@@ -23,6 +26,14 @@ export class NamesComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.validSub.unsubscribe();
+  }
+
+  inputFocused() {
+    this.inputFocus.emit(true);
+  }
+
+  inputBlurred() {
+    this.inputFocus.emit(false);
   }
 
   ngOnInit(): void {

@@ -15,6 +15,9 @@ export class LandingComponent {
   LandingStage = LandingStage; // For HTML to recognise the enum
   currentStage: LandingStage;
   isStageValid: boolean;
+  screenWidth = window.screen.width;
+  computerWidthAssumption = 1000;
+  showingTop = true;
 
   pregameInfo = {
     names: [],
@@ -64,6 +67,13 @@ export class LandingComponent {
     };
     this.gameData.addPlayers(this.pregameInfo.names);
     this.gameData.initGame();
+  }
+  nameInputFocused(focused) {
+    console.log(focused);
+    if(this.screenWidth < this.computerWidthAssumption) {
+        this.showingTop = !focused;
+        console.log(this.showingTop);
+    }
   }
 
 

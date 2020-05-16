@@ -1,4 +1,4 @@
-<app-top [text]="getTopTitle()"></app-top>
+<app-top *ngIf="showingTop" [text]="getTopTitle()"></app-top>
 <div class="background">
   <div class="container">
     <div class="top-padding"></div>
@@ -7,6 +7,7 @@
         *ngSwitchCase="LandingStage.NAME_STAGE"
         (isValid)="onValidityChange($event)"
         [namesList]="pregameInfo.names"
+        (inputFocus)='nameInputFocused($event)'
       ></app-names>
       <app-options [style]='pregameInfo.style' [bonus]='pregameInfo.bonus' [penalty]='pregameInfo.penalty' *ngSwitchCase="LandingStage.OPTIONS_STAGE"></app-options>
     </div>

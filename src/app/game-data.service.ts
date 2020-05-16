@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { GameStages } from './GameStages';
 import { LeaderboardEntry } from './LeaderboardEntry';
+import { NAMED_ENTITIES } from '@angular/compiler';
 
 @Injectable({
   providedIn: 'root'
@@ -28,9 +29,18 @@ export class GameDataService {
   }
 
   addPlayers(names: Array<string>) {
+    const nameDuplicates = new Map<string, number>();
     for (const name of names) {
-      this.playerNames.push(name);
-      this.players.set(name, {
+      let nameToPut = name;
+      if (nameDuplicates.has(name)) {
+        let count = nameDuplicates.get(name);
+        nameToPut += ' ' + (++count).toString();
+        nameDuplicates.set(name, count);
+      } else {
+        nameDuplicates.set(name, 1);
+      }
+      this.playerNames.push(nameToPut);
+      this.players.set(nameToPut, {
         totalScore: 0,
         correctCount: 0
       });
