@@ -1,13 +1,15 @@
 # whist-assist
 
-* SCAlA
-* REACT.JS/NATIVE
-* POSTGRESQL
-* DOCKER
-* MATERIAl.UI
-# WhistAssistUi
+Helper for the Romanian card game [Whist](https://en.wikipedia.org/wiki/Romanian_whist) (similar to the English or American game Oh Hell!).
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 8.3.23.
+**whist-assist** is a phone targeted web application to assist with point calculation and tracking.
+
+![image](https://user-images.githubusercontent.com/15807240/109430252-52076a00-79f8-11eb-8fa7-d31cb82a88e9.png)
+![image](https://user-images.githubusercontent.com/15807240/109430264-5e8bc280-79f8-11eb-9cab-d880d5df01ca.png)
+![image](https://user-images.githubusercontent.com/15807240/109430285-7d8a5480-79f8-11eb-80f8-5e29a562de49.png)
+![image](https://user-images.githubusercontent.com/15807240/109430302-8e3aca80-79f8-11eb-90b7-b5b7585568af.png)
+![image](https://user-images.githubusercontent.com/15807240/109430313-9b57b980-79f8-11eb-9823-41d417cf1b45.png)
+
 
 ## Development server
 
